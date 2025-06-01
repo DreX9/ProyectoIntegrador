@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card" style="width: 400px;">
+            <div class="card-body">
+                <h2 class="text-center mb-4">Iniciar Sesión</h2>
+                <form>
+                    <div class="mb-3 row">
+                        <label for="usuario" class="col-sm-4 col-form-label text-end">Usuario</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="usuario">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 row">
+                        <label for="rol" class="col-sm-4 col-form-label text-end">Rol</label>
+                        <div class="col-sm-8">
+                            <select class="form-select" id="rol">
+                                <option selected disabled>Seleccionar</option>
+                                <option value="1">Administrador</option>
+                                <option value="2">Empleado</option>
+                                <option value="3">Almacenista</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3 row">
+                        <label for="contraseña" class="col-sm-4 col-form-label text-end">Contraseña</label>
+                        <div class="col-sm-8">
+                            <input type="password" class="form-control" id="contraseña">
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="submit" class="btn btn-primary px-4">Entrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

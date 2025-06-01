@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proveedores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <!-- Barra de navegación lateral -->
+            <header th:replace="~{/fragments/template :: header}"></header>
+
+            <!-- Contenido principal -->
+            <main class="col py-3">
+                <section class="card mb-4 border-0 shadow-sm">
+                    <header class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Sistema de Proveedores</h5>
+                    </header>
+                    <div class="card-body">
+                        <form id="comprasForm"  >
+                            <input type="hidden"  />
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="nombre" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre"
+                                        name="nombre" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="direccion" class="form-label">Dirección</label>
+                                    <input type="text" class="form-control" id="direccion"
+                                        name="direccion" >
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="contacto" class="form-label">Contacto</label>
+                                    <input type="text" class="form-control " id="contacto" name="contacto" required >
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="ruc" class="form-label">RUC</label>
+                                    <input type="text" class="form-control numeric-only" id="ruc" name="ruc" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="telefono" class="form-label">Teléfono</label>
+                                    <input type="text" class="form-control numeric-only" id="telefono" name="telefono" required >
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="matricula" class="form-label">Matricula de Embarcación</label>
+                                    <input type="text" class="form-control " id="matricula" name="matricula" required >
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-5">
+                                    <label for="stockDisponible" class="form-label">Puerto de Origen</label>
+                                    <input type="text" class="form-control" id="puertoOrigen" required >
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="tipoProveedor" class="form-label">Tipo de Proveedor</label>
+                                    <select class="form-select" id="tipoProveedor" name="tipoProveedor" required >
+                                        <option value="" selected>Seleccionar</option>
+                                        <option value="Embarcación">Embarcación</option>
+                                        <option value="Empresa">Empresa</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end justify-content-end">
+                                    <button type="submit" class="btn btn-primary" id="btnComprar">Guardar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <section class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="comprasTable">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Contacto</th>
+                                        <th>RUC</th>
+                                        <th>Teléfono</th>
+                                        <th>Dirección</th>
+                                        <th>Puerto de Origen</th>
+                                        <th>Matrícula de Embarcación</th>
+                                        <th>Tipo de Proveedor</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="proveedor:${lista}">
+                                        <td >[[${proveedor.id}]]</td>
+                                        <td >[[${proveedor.nombre}]]</td>
+                                        <td >[[${proveedor.contacto}]]</td>
+                                        <td >[[${proveedor.ruc}]]</td>
+                                        <td >[[${proveedor.telefono}]]</td>
+                                        <td >[[${proveedor.direccion}]]</td>
+                                        <td >[[${proveedor.puerto}]]</td>
+                                        <td >[[${proveedor.matricula}]]</td>
+                                        <td >[[${proveedor.tipo}]]</td>
+                                        <td>
+                                            <a class="btn btn-warning">Editar</a>
+                                            <a class="btn btn-danger">Eliminar</a>
+                                        </td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <footer class="mt-auto border-0 py-3 bg-dark text-white text-center">
+        <div class="container">
+            <span>Sistema de Gestión de Compras © 2025</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasificaciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <!-- Barra de navegación lateral -->
+            <header th:replace="~{/fragments/template :: header}"></header>
+
+            <!-- Contenido principal -->
+            <main class="col py-3">
+                <section class="card mb-4 border-0 shadow-sm">
+                    <header class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Sistema de Clasificaciones</h5>
+                    </header>
+                    <div class="card-body">
+                        <form id="clasificacionesForm" >
+                            <input type="hidden"  />
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="nombreClasificacion" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="nombreClasificacion"
+                                        name="nombreClasificacion" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="tipoPresentacion" class="form-label">Tipo de Presentación</label>
+                                    <input type="text" class="form-control" id="tipoPresentacion"
+                                        name="tipoPresentacion"  required>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <section class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover" id="clasificacionesTable">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Presentación</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="clasificacion:${lista}">
+                                        <td>[[${clasificacion.id}]]</td>
+                                        <td>[[${clasificacion.nombre}]]</td>
+                                        <td>[[${clasificacion.presentacion}]]</td>
+                                        <td>
+                                            <a class="btn btn-warning">Editar</a>
+                                            <a class="btn btn-danger">Eliminar</a>
+                                        </td>
+                                        
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <footer class="mt-auto border-0 py-3 bg-dark text-white text-center">
+        <div class="container">
+            <span>Sistema de Gestión © 2025</span>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+
+</html>
