@@ -23,59 +23,72 @@
                         <h5 class="mb-0">Sistema de Usuarios</h5>
                     </header>
                     <div class="card-body">
-                        <form id="comprasForm" th:object="${usuario}" th:action="@{/saveUsuario}" method="post">
-                            <input type="hidden" th:field="*{id_usuario}" />
+                        <form id="comprasForm" th:action="@{/usuarios/save}" method="post" th:object="${usuario}">
+                            <input type="hidden" th:field="*{id}" />
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="nombre" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="nombre"
-                                        name="nombre" th:field="*{nombre}" required>
+                                    <input type="text" class="form-control" id="nombre" name="nombre"
+                                        th:field="*{nombre}" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="telefono" class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control" id="telefono"
-                                        th:field="*{telefono}" required>
+                                    <input type="text" class="form-control" id="telefono" th:field="*{telefono}"
+                                        required>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="usuario" class="form-label">Usuario</label>
-                                    <input type="text" class="form-control" id="usuario"
-                                        name="usuario" th:field="*{usuario}" required>
+                                    <label for="usuario" class="form-label">Nombre de Usuario</label>
+                                    <input type="text" class="form-control" id="usuario" name="usuario"
+                                        th:field="*{usuarioName}" required>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="apellido" class="form-label">Apellido</label>
-                                    <input type="text" class="form-control" id="apellido"
-                                        name="apellido" th:field="*{apellido}" required>
+                                    <input type="text" class="form-control" id="apellido" name="apellido"
+                                        th:field="*{apellido}" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="dni" class="form-label">DNI</label>
-                                    <input type="text" class="form-control" id="dni" name="dni" th:field="*{dni}" required>
+                                    <input type="text" class="form-control" id="dni" name="dni" th:field="*{dni}"
+                                        required>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="contraseña" class="form-label">Contraseña</label>
-                                    <input type="text" class="form-control" id="contraseña" name="contraseña" th:field="*{contraseña}" required>
+                                    <input type="text" class="form-control" id="contraseña" name="contraseña"
+                                        th:field="*{contrasena}" required>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="correo" class="form-label">Correo</label>
-                                    <input type="text" class="form-control" id="correo" name="correo" th:field="*{correo}" required>
+                                    <input type="text" class="form-control" id="correo" name="correo"
+                                        th:field="*{correo}" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="rol" class="form-label">Rol</label>
                                     <select class="form-select" id="rol" name="rol" th:field="*{rol}">
-                                        <option value="" selected>Seleccionar</option>
-                                        <option value="Administrador">Administrador</option>
-                                        <option value="Empleado">Empleado</option>
-                                        <option value="Almacenista">Almacenista</option>
+                                        <option value="" disabled selected>Seleccionar</option>
+                                        <option th:each="r : ${roles}" th:value="${r.id}" th:text="${r.nombre}">
+                                        </option>
                                     </select>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="fechaCompra" class="form-label fw-semibold">Fecha de Nacimiento</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="fechaCompra" name="fechaCompra"
+                                            th:field="*{nacimiento}" placeholder="yyyy-MM-dd">
+                                        <span class="input-group-text bg-primary text-white">
+                                            <i class="bi bi-calendar"></i>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="row mb-3">                                
+                            <div class="row mb-3">
                                 <div class="col-md-12 d-flex align-items-end justify-content-end">
                                     <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
                                 </div>
@@ -91,11 +104,13 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>ID</th>
+                                        <th>DNI</th>
                                         <th>Nombre</th>
                                         <th>Apellido</th>
                                         <th>Correo</th>
                                         <th>Teléfono</th>
-                                        <th>DNI</th>
+                                        <th>Fecha de Nacimiento</th>
+                                        <th>Fecha de registro</th>
                                         <th>Rol</th>
                                         <th>Usuario</th>
                                         <th>Contraseña</th>
@@ -103,19 +118,26 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="usuario:${usuarios}">
-                                        <td th:text="${usuario.id_usuario}"></td>
-                                        <td th:text="${usuario.nombre}"></td>
-                                        <td th:text="${usuario.apellido}"></td>
-                                        <td th:text="${usuario.correo}"></td>
-                                        <td th:text="${usuario.telefono}"></td>
-                                        <td th:text="${usuario.dni}"></td>
-                                        <td th:text="${usuario.usuario}"></td>
-                                        <td th:text="${usuario.contraseña}"></td>
-                                        <td th:text="${usuario.rol}"></td>
+                                    <tr th:each="usuario:${lista}">
+                                        <td>[[${usuario.id}]]</td>
+                                        <td>[[${usuario.dni}]]</td>
+                                        <td>[[${usuario.nombre}]]</td>
+                                        <td>[[${usuario.apellido}]]</td>
+                                        <td>[[${usuario.correo}]]</td>
+                                        <td>[[${usuario.telefono}]]</td>
+                                        <td>[[${usuario.nacimiento}]]</td>
+                                        <td>[[${usuario.registro}]]</td>
+                                        <td>[[${usuario.rol.nombre}]]</td>
+                                        <td>[[${usuario.usuarioName}]]</td>
+                                        <td>[[${usuario.contrasena}]]</td>
                                         <td>
-                                            <a th:href="@{/editarUsuarios/} + ${usuario.id_usuario}" class="btn btn-warning">Editar</a>
-                                            <a th:href="@{/deleteUsuarios/} + ${usuario.id_usuario}"class="btn btn-danger">Eliminar</a>
+                                            <a th:href="@{/usuarios/edit(id=${usuario.id})}"
+                                                class="btn btn-warning">Editar</a>
+                                            <form th:action="@{/usuarios/delete(id=${usuario.id})}" method="post"
+                                                style="display:inline;">
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('¿Deseas eliminar este usuario?')">Eliminar</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 </tbody>

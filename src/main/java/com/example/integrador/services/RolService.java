@@ -19,7 +19,7 @@ public class RolService {
     public Rol rolSelectOne(Integer id) {
         return repository.findById(id).orElse(null);
     }
-    // INSERT into Rol && UPDATE dinosaurio SET
+    
     public Rol rolInsertUpdate(Rol rol){
         return repository.save(rol);
     }

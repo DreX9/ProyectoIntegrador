@@ -23,17 +23,17 @@
                         <h5 class="mb-0">Sistema de Almacenes</h5>
                     </header>
                     <div class="card-body">
-                        <form id="almacenesForm" >
-                            <input type="hidden"  />
+                        <form id="almacenesForm" th:action="@{/almacenes/save}" method="post" th:object="${almacen}">
+                            <input type="hidden" th:field="*{id}"/>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="nombreAlmacen" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="nombreAlmacen" name="nombreAlmacen" required
+                                    <input type="text" class="form-control" id="nombreAlmacen" th:field="*{nombre}" required
                                     >
                                 </div>
                                 <div class="col-md-6">
                                     <label for="direccionAlmacen" class="form-label">Dirección</label>
-                                    <input type="text" class="form-control" id="direccionAlmacen" name="direccionAlmacen" required
+                                    <input type="text" class="form-control" id="direccionAlmacen" th:field="*{direccion}" required
                                     >
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="descripcionAlmacen" class="form-label">Descripción</label>
-                                    <input type="text" class="form-control" id="descripcionAlmacen" name="descripcionAlmacen" required
+                                    <input type="text" class="form-control" id="descripcionAlmacen" th:field="*{descripcion}" required
                                     >
                                 </div>
                             </div>
@@ -76,8 +76,10 @@
                                         <td >[[${almacen.direccion}]]</td>
                                         <td >[[${almacen.descripcion}]]</td>
                                         <td>
-                                            <a class="btn btn-warning">Editar</a>
-                                            <a class="btn btn-danger">Eliminar</a>
+                                            <a th:href="@{/almacenes/edit(id=${almacen.id})}" class="btn btn-warning">Editar</a>
+                                            <form th:action="@{/almacenes/delete(id=${almacen.id})}" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('¿Deseas eliminar este almacen?')">Eliminar</button>
+                                            </form>
                                         </td>
                                     </tr> 
                                 </tbody>

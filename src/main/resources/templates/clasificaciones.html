@@ -23,18 +23,18 @@
                         <h5 class="mb-0">Sistema de Clasificaciones</h5>
                     </header>
                     <div class="card-body">
-                        <form id="clasificacionesForm" >
-                            <input type="hidden"  />
+                        <form id="clasificacionesForm" th:action="@{/clasificaciones/save}" method="post" th:object="${clasificacion}">
+                            <input type="hidden"  th:field="*{id}"/>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="nombreClasificacion" class="form-label">Nombre</label>
                                     <input type="text" class="form-control" id="nombreClasificacion"
-                                        name="nombreClasificacion" required>
+                                        th:field="*{nombre}" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="tipoPresentacion" class="form-label">Tipo de Presentación</label>
                                     <input type="text" class="form-control" id="tipoPresentacion"
-                                        name="tipoPresentacion"  required>
+                                        th:field="*{presentacion}"  required>
                                 </div>
                             </div>
                             
@@ -65,8 +65,10 @@
                                         <td>[[${clasificacion.nombre}]]</td>
                                         <td>[[${clasificacion.presentacion}]]</td>
                                         <td>
-                                            <a class="btn btn-warning">Editar</a>
-                                            <a class="btn btn-danger">Eliminar</a>
+                                            <a th:href="@{/clasificaciones/edit(id=${clasificacion.id})}" class="btn btn-warning">Editar</a>
+                                            <form th:action="@{/clasificaciones/delete(id=${clasificacion.id})}" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('¿Deseas eliminar esta clasificacion?')">Eliminar</button>
+                                            </form>
                                         </td>
                                         
                                     </tr>

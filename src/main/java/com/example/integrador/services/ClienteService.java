@@ -14,7 +14,25 @@ import lombok.RequiredArgsConstructor;
 public class ClienteService {
 
     private final ClienteRepository repository;
-    public List<Cliente> clienteSel(){
+
+    public List<Cliente> clienteSel() {
         return repository.findAll();
+    }
+
+    public Cliente clienteSelectOne(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    
+    public Cliente clienteInsertUpdate(Cliente cliente) {
+        return repository.save(cliente);
+    }
+
+    public void clienteDelete(Integer id) {
+        repository.deleteById(id);
+    }
+
+    public long contarClientes() {
+        return repository.count();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.integrador.entities;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,4 +32,6 @@ public class Proveedor {
     private String puerto;
     @Column(name = "tipo_proveedor")
     private String tipo;
+    @Column(name = "fecha_registro" , insertable = false, updatable = false)
+    private LocalDate registro;
 }

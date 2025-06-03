@@ -17,4 +17,14 @@ public class AlmacenService {
     public List<Almacen> almacenSel(){
         return repository.findAll();
     }
+    public Almacen almacenSelectOne(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+    
+    public Almacen almacenInsertUpdate(Almacen almacen){
+        return repository.save(almacen);
+    }
+     public void almacenDelete(Integer id) {
+        repository.deleteById(id);
+    }
 }

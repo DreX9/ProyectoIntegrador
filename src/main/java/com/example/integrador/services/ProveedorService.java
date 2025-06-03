@@ -17,4 +17,14 @@ public class ProveedorService {
     public List<Proveedor> proveedorSel(){
         return repository.findAll();
     }
+    public Proveedor proveedorSelectOne(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+    
+    public Proveedor proveedorInsertUpdate(Proveedor proveedor){
+        return repository.save(proveedor);
+    }
+     public void proveedorDelete(Integer id) {
+        repository.deleteById(id);
+    }
 }
