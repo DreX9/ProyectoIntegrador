@@ -23,51 +23,51 @@
                         <h5 class="mb-0">Sistema de Proveedores</h5>
                     </header>
                     <div class="card-body">
-                        <form id="comprasForm"  >
-                            <input type="hidden"  />
+                        <form id="comprasForm" th:action="@{/proveedores/save}" method="post" th:object="${proveedor}" >
+                            <input type="hidden"  th:field="*{id}"/>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="nombre" class="form-label">Nombre</label>
                                     <input type="text" class="form-control" id="nombre"
-                                        name="nombre" required>
+                                        th:field="*{nombre}" required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="direccion" class="form-label">Dirección</label>
                                     <input type="text" class="form-control" id="direccion"
-                                        name="direccion" >
+                                        th:field="*{direccion}" required >
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="contacto" class="form-label">Contacto</label>
-                                    <input type="text" class="form-control " id="contacto" name="contacto" required >
+                                    <input type="text" class="form-control " id="contacto" th:field="*{contacto}" required  >
                                 </div>
                                 <div class="col-md-6">
                                     <label for="ruc" class="form-label">RUC</label>
-                                    <input type="text" class="form-control numeric-only" id="ruc" name="ruc" required>
+                                    <input type="text" class="form-control numeric-only" id="ruc" th:field="*{ruc}" required >
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="telefono" class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control numeric-only" id="telefono" name="telefono" required >
+                                    <input type="text" class="form-control numeric-only" id="telefono" th:field="*{telefono}" required  >
                                 </div>
                                 <div class="col-md-6">
                                     <label for="matricula" class="form-label">Matricula de Embarcación</label>
-                                    <input type="text" class="form-control " id="matricula" name="matricula" required >
+                                    <input type="text" class="form-control " id="matricula" th:field="*{matricula}" required >
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-5">
                                     <label for="stockDisponible" class="form-label">Puerto de Origen</label>
-                                    <input type="text" class="form-control" id="puertoOrigen" required >
+                                    <input type="text" class="form-control" id="puertoOrigen" th:field="*{puerto}" required  >
                                 </div>
                                 <div class="col-md-5">
                                     <label for="tipoProveedor" class="form-label">Tipo de Proveedor</label>
-                                    <select class="form-select" id="tipoProveedor" name="tipoProveedor" required >
+                                    <select class="form-select" id="tipoProveedor" name="tipoProveedor" th:field="*{tipo}" required  >
                                         <option value="" selected>Seleccionar</option>
                                         <option value="Embarcación">Embarcación</option>
                                         <option value="Empresa">Empresa</option>
@@ -96,6 +96,7 @@
                                         <th>Puerto de Origen</th>
                                         <th>Matrícula de Embarcación</th>
                                         <th>Tipo de Proveedor</th>
+                                        <th>Fecha de Registro</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -110,9 +111,12 @@
                                         <td >[[${proveedor.puerto}]]</td>
                                         <td >[[${proveedor.matricula}]]</td>
                                         <td >[[${proveedor.tipo}]]</td>
+                                        <td >[[${proveedor.registro}]]</td>
                                         <td>
-                                            <a class="btn btn-warning">Editar</a>
-                                            <a class="btn btn-danger">Eliminar</a>
+                                            <a th:href="@{/proveedores/edit(id=${proveedor.id})}" class="btn btn-warning">Editar</a>
+                                            <form th:action="@{/proveedores/delete(id=${proveedor.id})}" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('¿Deseas eliminar ester proveedor?')">Eliminar</button>
+                                            </form>
                                         </td>
                                     </tr> 
                                 </tbody>

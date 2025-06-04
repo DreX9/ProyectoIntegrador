@@ -1,5 +1,9 @@
 package com.example.integrador.entities;
 
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,12 +21,16 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cliente")
-    private int id;
+    private Integer id;
     private String nombre;
     private String apellido;
     private String correo;
     private String telefono;
     private String dni;
     private String actividad;
+    @Column( insertable = false, updatable = false)
+    private LocalDate registro;
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDate nacimiento;
     
 }

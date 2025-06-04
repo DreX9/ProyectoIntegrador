@@ -23,71 +23,66 @@
                         <h5 class="mb-0">Sistema de Clientes</h5>
                     </header>
                     <div class="card-body">
-                        <form id="comprasForm" >
-                            <input type="hidden"  />
+                        <form id="comprasForm" th:action="@{/clientes/save}" method="post" th:object="${cliente}">
+                            <input type="hidden" th:field="*{id}" />
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="nombre" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="nombre"
-                                        name="nombre" >
+                                    <label for="nombre" class="form-label fw-semibold">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre"
+                                        th:field="*{nombre}" required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="telefono" class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control numeric-only" id="telefono" name="telefono" >
-                                </div>                                
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="apellido" class="form-label">Apellido</label>
-                                    <select class="form-select" id="apellido" name="apellido" >
-                                        <option value="" selected>Seleccionar</option>
-                                        <option value="1">Clasificación 1</option>
-                                        <option value="2">Clasificación 2</option>
-                                        <option value="3">Clasificación 3</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="dni" class="form-label">DNI</label>
-                                    <input type="text" class="form-control numeric-only" id="dni" name="dni" >
+                                    <label for="telefono" class="form-label fw-semibold">Teléfono</label>
+                                    <input type="text" class="form-control numeric-only" id="telefono" name="telefono"
+                                        th:field="*{telefono}" required>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="correo" class="form-label">Correo</label>
-                                    <select class="form-select" id="correo" name="correo" >
-                                        <option value="" selected>Seleccionar</option>
-                                        <option value="1">Producto 1</option>
-                                        <option value="2">Producto 2</option>
-                                        <option value="3">Producto 3</option>
-                                    </select>
+                                    <label for="apellido" class="form-label fw-semibold">Apellido</label>
+                                    <input type="text" class="form-control" id="nombreRol" th:field="*{apellido}"
+                                        required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="actividad" class="form-label">Actividad</label>
-                                    <select class="form-select" id="actividad" name="actividad" >
+                                    <label for="dni" class="form-label fw-semibold">DNI</label>
+                                    <input type="text" class="form-control numeric-only" id="dni" name="dni"
+                                        th:field="*{dni}" required>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="correo" class="form-label fw-semibold">Correo</label>
+                                    <input type="text" class="form-control" id="nombreRol" th:field="*{correo}"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="actividad" class="form-label fw-semibold">Actividad</label>
+                                    <select class="form-select" id="actividad" name="actividad" th:field="*{actividad}"
+                                        required>
                                         <option value="" selected>Seleccionar</option>
-                                        <option value="1">Producto 1</option>
-                                        <option value="2">Producto 2</option>
-                                        <option value="3">Producto 3</option>
+                                        <option value="Frecuente">Frecuente</option>
+                                        <option value="Ocasional">Ocasional</option>
+                                        <option value="Inictivo">Inactivo</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-4">
-                                    <label for="stockDisponible" class="form-label">Cantidad de Clientes</label>
-                                    <input type="text" class="form-control" id="stockDisponible" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="fechaCompra" class="form-label">Fecha de Registro</label>
+                                    <label for="fechaCompra" class="form-label fw-semibold">Fecha de Nacimiento</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="fechaCompra" name="fechaCompra"
-                                            placeholder="DD/MM/AAAA">
+                                            th:field="*{nacimiento}" placeholder="yyyy-MM-dd">
                                         <span class="input-group-text bg-primary text-white">
                                             <i class="bi bi-calendar"></i>
                                         </span>
                                     </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="stockDisponible" class="form-label fw-semibold">Cantidad de Clientes</label>
+                                    <input type="text" class="form-control" id="stockDisponible" th:value="${totalClientes}" readonly>
                                 </div>
                                 <div class="col-md-4 d-flex align-items-end justify-content-end">
                                     <button type="submit" class="btn btn-primary" id="btnComprar">Guardar</button>
@@ -104,27 +99,33 @@
                                 <thead class="table-dark">
                                     <tr>
                                         <th>ID</th>
+                                        <th>DNI</th>
                                         <th>Nombre</th>
                                         <th>Apellido</th>
                                         <th>Correo</th>
                                         <th>Teléfono</th>
-                                        <th>DNI</th>
+                                        <th>Fecha de Nacimiento</th>
+                                        <th>Fecha de Registro</th>
                                         <th>Actividad</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:each="cliente:${lista}">
-                                        <td >[[${cliente.id}]]</td>
-                                        <td >[[${cliente.nombre}]]</td>
-                                        <td >[[${cliente.apellido}]]</td>
-                                        <td >[[${cliente.correo}]]</td>
-                                        <td >[[${cliente.telefono}]]</td>
-                                        <td >[[${cliente.dni}]]</td>
-                                        <td >[[${cliente.actividad}]]</td>
+                                        <td>[[${cliente.id}]]</td>
+                                        <td>[[${cliente.dni}]]</td>
+                                        <td>[[${cliente.nombre}]]</td>
+                                        <td>[[${cliente.apellido}]]</td>
+                                        <td>[[${cliente.correo}]]</td>
+                                        <td>[[${cliente.telefono}]]</td>
+                                        <td>[[${cliente.nacimiento}]]</td>
+                                        <td>[[${cliente.registro}]]</td>
+                                        <td>[[${cliente.actividad}]]</td>
                                         <td>
-                                            <a  class="btn btn-warning">Editar</a>
-                                            <a class="btn btn-danger">Eliminar</a>
+                                            <a th:href="@{/clientes/edit(id=${cliente.id})}" class="btn btn-warning">Editar</a>
+                                            <form th:action="@{/clientes/delete(id=${cliente.id})}" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('¿Deseas eliminar este cliente?')">Eliminar</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 </tbody>

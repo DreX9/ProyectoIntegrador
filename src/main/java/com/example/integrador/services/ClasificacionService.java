@@ -17,5 +17,15 @@ public class ClasificacionService {
     public List<Clasificacion> clasificacionSel(){
         return repository.findAll();
     }
+    public Clasificacion clasificacionSelectOne(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+    
+    public Clasificacion clasificacionInsertUpdate(Clasificacion clasificacion){
+        return repository.save(clasificacion);
+    }
+     public void clasificacionDelete(Integer id) {
+        repository.deleteById(id);
+    }
 
 }

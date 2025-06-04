@@ -2,10 +2,8 @@ package com.example.integrador.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,9 +35,9 @@ public class RolController {
 
     @GetMapping("/edit")
     public String editarRol(@RequestParam("id") Integer id, Model model) {
-        model.addAttribute("rol", service.rolSelectOne(id)); // Carga los datos del rol a editar
-        model.addAttribute("lista", service.rolSel()); // También cargamos la tabla
-        return "roles"; // Reutilizamos la misma vista
+        model.addAttribute("rol", service.rolSelectOne(id));
+        model.addAttribute("lista", service.rolSel()); 
+        return "roles"; 
     }
 
     @PostMapping("/delete")
