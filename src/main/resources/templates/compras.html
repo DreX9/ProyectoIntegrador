@@ -23,17 +23,9 @@
                         <h5 class="mb-0">Sistema de Compras</h5>
                     </header>
                     <div class="card-body">
-                        <form id="comprasForm" action="#" method="post">
+                        <form id="comprasForm" action="#" th:action="@{/compras/save}" th:object="${detalle}" method="post">
+
                             <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label for="proveedor" class="form-label">Proveedor</label>
-                                    <select class="form-select" id="proveedor" name="proveedor">
-                                        <option value="" selected>Seleccionar</option>
-                                        <option value="1">Proveedor 1</option>
-                                        <option value="2">Proveedor 2</option>
-                                        <option value="3">Proveedor 3</option>
-                                    </select>
-                                </div>
                                 <div class="col-md-4">
                                     <label for="precioUnitario" class="form-label">Precio Unitario</label>
                                     <input type="text" class="form-control numeric-only" id="precioUnitario"
@@ -41,48 +33,46 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="almacen" class="form-label">Almacén</label>
-                                    <select class="form-select" id="almacen" name="almacen">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label for="clasificacion" class="form-label">Clasificación</label>
-                                    <select class="form-select" id="clasificacion" name="clasificacion">
-                                        <option value="" selected>Seleccionar</option>
-                                        <option value="1">Clasificación 1</option>
-                                        <option value="2">Clasificación 2</option>
-                                        <option value="3">Clasificación 3</option>
+                                    <select class="form-select" id="almacen" name="almacen" th:field="*{almacen}">
+                                        <option value="" disabled selected>Seleccionar</option>
+                                        <option th:each="a : ${almacenes}" th:value="${a.id}"
+                                            th:text="${a.nombre}">
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="peso" class="form-label">Peso (Kg)</label>
                                     <input type="text" class="form-control numeric-only" id="peso" name="peso">
                                 </div>
-                                <div class="col-md-4"></div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="producto" class="form-label">Producto</label>
-                                    <select class="form-select" id="producto" name="producto">
-                                        <option value="" selected>Seleccionar</option>
-                                        <option value="1">Producto 1</option>
-                                        <option value="2">Producto 2</option>
-                                        <option value="3">Producto 3</option>
+                                    <select class="form-select" id="producto" name="producto" th:field="*{producto}">
+                                        <option value="" disabled selected>Seleccionar</option>
+                                        <option th:each="p : ${productos}" th:value="${p.id}"
+                                            th:text="${p.nombre}">
+                                        </option>
                                     </select>
                                 </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Clasificación</label>
+                                    <p ></p>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Presentación</label>
+                                    <p></p>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="cantidad" class="form-label">Cantidad</label>
                                     <input type="text" class="form-control numeric-only" id="cantidad" name="cantidad">
                                 </div>
-                                <div class="col-md-4"></div>
-                            </div>
-
-                            <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="stockDisponible" class="form-label">Stock Disponible</label>
                                     <input type="text" class="form-control" id="stockDisponible" readonly>
@@ -97,13 +87,18 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-md-4 d-flex align-items-end justify-content-end">
-                                    <button type="button" class="btn btn-primary" id="btnComprar">Comprar</button>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-12 d-flex justify-content-end">
+                                    <button type="submit" class="btn btn-primary" id="btnComprar">Comprar</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </section>
+
+
 
                 <section class="card border-0 shadow-sm">
                     <div class="card-body">
