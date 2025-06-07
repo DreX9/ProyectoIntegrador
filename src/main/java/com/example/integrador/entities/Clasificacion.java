@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Entity
@@ -17,8 +19,12 @@ public class Clasificacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_clasificacion")
     private Integer id;
-    @Column(name = "nombre_clasificacion")
+    @Column(name = "nombre_clasificacion", nullable = false)
+    @NotBlank(message="El nombre es obligatorio")
+    @Size(max=100, message="El nombre debe tener menos de 100 caracteres")
     private String nombre;
-    @Column(name = "tipo_presentacion")
+    @Column(name = "tipo_presentacion", nullable = false)
+    @NotBlank(message="La presentación es obligatorio")    
+    @Size(max=100, message="La presentación debe tener menos de 100 caracteres")
     private String  presentacion;
 }
