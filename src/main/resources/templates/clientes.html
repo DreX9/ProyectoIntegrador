@@ -30,42 +30,44 @@
                                     <label for="nombre" class="form-label fw-semibold">Nombre</label>
                                     <input type="text" class="form-control" id="nombre" name="nombre"
                                         th:field="*{nombre}" required>
+                                    <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="telefono" class="form-label fw-semibold">Teléfono</label>
-                                    <input type="text" class="form-control numeric-only" id="telefono" name="telefono"
-                                        th:field="*{telefono}" required>
+                                    <input type="text" class="form-control numeric-only" id="telefono" name="telefono" th:field="*{telefono}" required>
+                                    <span th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" style="color: red;"></span>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="apellido" class="form-label fw-semibold">Apellido</label>
-                                    <input type="text" class="form-control" id="nombreRol" th:field="*{apellido}"
-                                        required>
+                                    <input type="text" class="form-control" id="nombreRol" th:field="*{apellido}" required>
+                                    <span th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="dni" class="form-label fw-semibold">DNI</label>
                                     <input type="text" class="form-control numeric-only" id="dni" name="dni"
                                         th:field="*{dni}" required>
+                                    <span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" style="color: red;"></span>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="correo" class="form-label fw-semibold">Correo</label>
-                                    <input type="text" class="form-control" id="nombreRol" th:field="*{correo}"
-                                        required>
+                                    <input type="text" class="form-control" id="nombreRol" th:field="*{correo}" required>
+                                    <span th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="actividad" class="form-label fw-semibold">Actividad</label>
-                                    <select class="form-select" id="actividad" name="actividad" th:field="*{actividad}"
-                                        required>
+                                    <select class="form-select" id="actividad" name="actividad" th:field="*{actividad}" required>
                                         <option value="" selected>Seleccionar</option>
                                         <option value="Frecuente">Frecuente</option>
                                         <option value="Ocasional">Ocasional</option>
                                         <option value="Inictivo">Inactivo</option>
                                     </select>
+                                    <span th:if="${#fields.hasErrors('actividad')}" th:errors="*{actividad}" style="color: red;"></span>
                                 </div>
                             </div>
 
@@ -73,16 +75,17 @@
                                 <div class="col-md-4">
                                     <label for="fechaCompra" class="form-label fw-semibold">Fecha de Nacimiento</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="fechaCompra" name="fechaCompra"
-                                            th:field="*{nacimiento}" placeholder="yyyy-MM-dd">
+                                        <input type="text" class="form-control" id="fechaCompra" name="fechaCompra" th:field="*{nacimiento}" placeholder="yyyy-MM-dd" required>
                                         <span class="input-group-text bg-primary text-white">
                                             <i class="bi bi-calendar"></i>
                                         </span>
                                     </div>
+                                    <span th:if="${#fields.hasErrors('nacimiento')}" th:errors="*{nacimiento}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="stockDisponible" class="form-label fw-semibold">Cantidad de Clientes</label>
                                     <input type="text" class="form-control" id="stockDisponible" th:value="${totalClientes}" readonly>
+                                    
                                 </div>
                                 <div class="col-md-4 d-flex align-items-end justify-content-end">
                                     <button type="submit" class="btn btn-primary" id="btnComprar">Guardar</button>

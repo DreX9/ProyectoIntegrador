@@ -30,11 +30,13 @@
                                     <label for="nombreClasificacion" class="form-label">Nombre</label>
                                     <input type="text" class="form-control" id="nombreClasificacion"
                                         th:field="*{nombre}" required>
+                                    <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="tipoPresentacion" class="form-label">Tipo de Presentación</label>
+                                    <label for="tipoPresentacion" class="form-label">Tipo de Presentación</label required>
                                     <input type="text" class="form-control" id="tipoPresentacion"
-                                        th:field="*{presentacion}"  required>
+                                        th:field="*{presentacion}">
+                                    <span th:if="${#fields.hasErrors('presentacion')}" th:errors="*{presentacion}" style="color: red;"></span>
                                 </div>
                             </div>
                             

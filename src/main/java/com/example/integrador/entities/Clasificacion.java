@@ -21,10 +21,10 @@ public class Clasificacion {
     private Integer id;
     @Column(name = "nombre_clasificacion", nullable = false)
     @NotBlank(message="El nombre es obligatorio")
-    @Size(max=100, message="El nombre debe tener menos de 100 caracteres")
+    @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
     private String nombre;
     @Column(name = "tipo_presentacion", nullable = false)
-    @NotBlank(message="La presentación es obligatorio")    
-    @Size(max=100, message="La presentación debe tener menos de 100 caracteres")
+    @NotBlank(message="La presentación es obligatoria")    
+    @Size(min = 2, max = 50, message = "La presentación debe tener entre 2 y 50 caracteres")
     private String  presentacion;
 }

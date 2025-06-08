@@ -28,42 +28,47 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="nombre" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="nombre"
-                                        th:field="*{nombre}" required>
+                                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
+                                    <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="direccion" class="form-label">Dirección</label>
-                                    <input type="text" class="form-control" id="direccion"
-                                        th:field="*{direccion}" required >
+                                    <input type="text" class="form-control" id="direccion" th:field="*{direccion}" required>
+                                    <span th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}" style="color: red;"></span>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="contacto" class="form-label">Contacto</label>
-                                    <input type="text" class="form-control " id="contacto" th:field="*{contacto}" required  >
+                                    <input type="text" class="form-control " id="contacto" th:field="*{contacto}" required>
+                                    <span th:if="${#fields.hasErrors('contacto')}" th:errors="*{contacto}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="ruc" class="form-label">RUC</label>
-                                    <input type="text" class="form-control numeric-only" id="ruc" th:field="*{ruc}" required >
+                                    <input type="text" class="form-control numeric-only" id="ruc" th:field="*{ruc}" required>
+                                    <span th:if="${#fields.hasErrors('ruc')}" th:errors="*{ruc}" style="color: red;"></span>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="telefono" class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control numeric-only" id="telefono" th:field="*{telefono}" required  >
+                                    <input type="text" class="form-control numeric-only" id="telefono" th:field="*{telefono}" required>
+                                    <span th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="matricula" class="form-label">Matricula de Embarcación</label>
-                                    <input type="text" class="form-control " id="matricula" th:field="*{matricula}" required >
+                                    <input type="text" class="form-control " id="matricula" th:field="*{matricula}" required>
+                                    <span th:if="${#fields.hasErrors('matricula')}" th:errors="*{matricula}" style="color: red;"></span>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-5">
                                     <label for="stockDisponible" class="form-label">Puerto de Origen</label>
-                                    <input type="text" class="form-control" id="puertoOrigen" th:field="*{puerto}" required  >
+                                    <input type="text" class="form-control" id="puertoOrigen" th:field="*{puerto}" required>
+                                    <span th:if="${#fields.hasErrors('puerto')}" th:errors="*{puerto}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-5">
                                     <label for="tipoProveedor" class="form-label">Tipo de Proveedor</label>
@@ -72,6 +77,7 @@
                                         <option value="Embarcación">Embarcación</option>
                                         <option value="Empresa">Empresa</option>
                                     </select>
+                                    <span th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-2 d-flex align-items-end justify-content-end">
                                     <button type="submit" class="btn btn-primary" id="btnComprar">Guardar</button>

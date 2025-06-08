@@ -30,16 +30,18 @@
                                     <label for="nombre" class="form-label">Nombre</label>
                                     <input type="text" class="form-control" id="nombre" name="nombre"
                                         th:field="*{nombre}" required>
+                                    <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="telefono" class="form-label">Teléfono</label>
-                                    <input type="text" class="form-control" id="telefono" th:field="*{telefono}"
-                                        required>
+                                    <input type="text" class="form-control" id="telefono" th:field="*{telefono}" required>
+                                    <span th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="usuario" class="form-label">Nombre de Usuario</label>
                                     <input type="text" class="form-control" id="usuario" name="usuario"
                                         th:field="*{usuarioName}" required>
+                                    <span th:if="${#fields.hasErrors('usuarioName')}" th:errors="*{usuarioName}" style="color: red;"></span>
                                 </div>
                             </div>
 
@@ -48,16 +50,17 @@
                                     <label for="apellido" class="form-label">Apellido</label>
                                     <input type="text" class="form-control" id="apellido" name="apellido"
                                         th:field="*{apellido}" required>
+                                    <span th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="dni" class="form-label">DNI</label>
-                                    <input type="text" class="form-control" id="dni" name="dni" th:field="*{dni}"
-                                        required>
+                                    <input type="text" class="form-control" id="dni" name="dni" th:field="*{dni}" required>
+                                    <span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="contraseña" class="form-label">Contraseña</label>
-                                    <input type="text" class="form-control" id="contraseña" name="contraseña"
-                                        th:field="*{contrasena}" required>
+                                    <input type="text" class="form-control" id="contraseña" name="contraseña" th:field="*{contrasena}" required>
+                                    <span th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}" style="color: red;"></span>
                                 </div>
                             </div>
 
@@ -66,6 +69,7 @@
                                     <label for="correo" class="form-label">Correo</label>
                                     <input type="text" class="form-control" id="correo" name="correo"
                                         th:field="*{correo}" required>
+                                    <span th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="rol" class="form-label">Rol</label>
@@ -74,7 +78,6 @@
                                         <option th:each="r : ${roles}" th:value="${r.id}" th:text="${r.nombre}">
                                         </option>
                                     </select>
-
                                 </div>
                                 <div class="col-md-4">
                                     <label for="fechaCompra" class="form-label fw-semibold">Fecha de Nacimiento</label>
@@ -85,6 +88,7 @@
                                             <i class="bi bi-calendar"></i>
                                         </span>
                                     </div>
+                                    <span th:if="${#fields.hasErrors('nacimiento')}" th:errors="*{nacimiento}" style="color: red;"></span>
                                 </div>
                             </div>
 

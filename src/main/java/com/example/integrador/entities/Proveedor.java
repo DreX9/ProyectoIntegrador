@@ -50,6 +50,7 @@ public class Proveedor {
     @Size(max=100, message="El puerto debe tener menos de 100 caracteres")
     @Column(name = "puerto_origen",nullable = false)
     private String puerto;
+    @NotBlank(message="El tipo es obligatorio")
     @Column(name = "tipo_proveedor", nullable = false)
     private String tipo;
     @Column(name = "fecha_registro" , insertable = false, updatable = false, nullable = false)
