@@ -19,6 +19,11 @@
             <main class="col py-3">
                 <div class="container py-4">
                     <h2>Registrar Compra</h2>
+                    <button type="button" class="btn btn-info mb-3" data-bs-toggle="modal"
+                        data-bs-target="#modalHistorial">
+                        <i class="bi bi-clock-history"></i> Ver Historial de Compras
+                    </button>
+
                     <form th:action="@{/compras/save}" th:object="${compra}" method="post">
                         <div class="row mb-3">
                             <!-- Proveedor -->
@@ -48,10 +53,16 @@
                                 <label class="form-label">Producto</label>
                                 <select id="producto" class="form-select">
                                     <option value="" disabled selected>Seleccionar</option>
-                                    <option th:each="prod : ${productos}" th:value="${prod.id}"
-                                        th:text="${prod.nombre}"></option>
+                                    <option th:each="prod : ${productos}" th:value="${prod.id}" th:text="${prod.nombre}"
+                                        th:attr="data-clasificacion=${prod.clasificacion.nombre},data-presentacion=${prod.clasificacion.presentacion}">
+                                    </option>
+
                                 </select>
+
+                                <!-- seria bueno incluir labels donde diga la el nombre de la clasificacion y la presentacion que esta dentro de cladificacion  -->
                             </div>
+                            <label id="infoProducto" class="form-label text-muted mt-2"></label>
+
                             <div class="col-md-2">
                                 <label class="form-label">Precio Unitario</label>
                                 <input type="number" step="0.01" id="precioUnitario" class="form-control" />
@@ -64,7 +75,7 @@
                                 <label class="form-label">Peso (Kg)</label>
                                 <input type="number" step="0.01" id="pesoTotal" class="form-control" />
                             </div>
-                            <div class="mb-3">
+                            <div class="col-md-2">
                                 <label class="form-label">Fecha Compra</label>
                                 <input type="date" class="form-control" id="fechaCompra" name="fechaCompra"
                                     th:value="${compra.fechaCompra}" />
@@ -110,6 +121,7 @@
     </div>
 
     <!-- JS -->
+
     <script>
         let contador = 0;
         const compraFecha = document.getElementById('fechaCompra');
@@ -161,17 +173,91 @@
             contador++;
         });
         function removeDetailRow(button, index) {
-        // Elimina la fila de la tabla
-        const row = button.closest('tr');
-        row.remove();
+            // Elimina la fila de la tabla
+            const row = button.closest('tr');
+            row.remove();
 
-        // Elimina los inputs ocultos correspondientes
-        const hiddenDiv = document.getElementById(`detalle-${index}`);
-        if (hiddenDiv) {
-            hiddenDiv.remove();
-        }};
-        
+            // Elimina los inputs ocultos correspondientes
+            const hiddenDiv = document.getElementById(`detalle-${index}`);
+            if (hiddenDiv) {
+                hiddenDiv.remove();
+            }
+        };
+        document.getElementById('btnLimpiar').addEventListener('click', () => {
+            // Elimina todas las filas del cuerpo de la tabla
+            const tbody = document.querySelector('#tablaDetalles tbody');
+            tbody.innerHTML = '';
+
+            // Elimina todos los campos ocultos
+            const detallesHidden = document.getElementById('detallesHiddenInputs');
+            detallesHidden.innerHTML = '';
+
+            // Reinicia el contador si es necesario
+            contador = 0;
+        });
+        document.getElementById("producto").addEventListener("change", function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const clasificacion = selectedOption.getAttribute("data-clasificacion");
+            const presentacion = selectedOption.getAttribute("data-presentacion");
+
+            console.log("Clasificación:", clasificacion);
+            console.log("Presentación:", presentacion);
+
+            // Aquí podrías mostrarlo en un <label> u otro lugar de la vista
+            document.getElementById("infoProducto").innerText = clasificacion + " - " + presentacion;
+        });
+
+
     </script>
+    <!-- Modal Historial -->
+    <div class="modal fade" id="modalHistorial" tabindex="-1" aria-labelledby="modalHistorialLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalHistorialLabel">Historial de Compras</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Proveedor</th>
+                                    <th>Producto</th>
+                                    <th>Almacén</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Peso Total (kg)</th>
+                                    <th>Subtotal</th>
+                                    <th>Usuario</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="h : ${historial}">
+                                    <td th:text="${h.fechaCompra}">fecha</td>
+                                    <td th:text="${h.nombreProveedor}">proveedor</td>
+                                    <td th:text="${h.nombreProducto}">producto</td>
+                                    <td th:text="${h.nombreAlmacen}">almacén</td>
+                                    <td th:text="${h.cantidad}">cantidad</td>
+                                    <td th:text="${h.precio}">precio</td>
+                                    <td th:text="${h.pesoTotalKg}">peso</td>
+                                    <td th:text="${h.subtotal}">subtotal</td>
+                                    <td th:text="${h.nombreUsuario}">usuario</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agrega esto justo antes del cierre del body -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.integrador.entities.Compra;
 import com.example.integrador.services.AlmacenService;
 import com.example.integrador.services.CompraService;
+import com.example.integrador.services.HistorialCompraService;
 import com.example.integrador.services.ProductoService;
 import com.example.integrador.services.ProveedorService;
 import com.example.integrador.services.UsuarioService;
@@ -28,6 +29,7 @@ public class CompraController {
     private final UsuarioService usuarioService; // Necesario si asignas usuario
     private final ProductoService productoService; // Para mostrar productos en el formulario
     private final AlmacenService almacenService;
+    private final HistorialCompraService historialCompraService;
 
     @GetMapping
     public String formularioCompra(Model model) {
@@ -39,6 +41,7 @@ public class CompraController {
         model.addAttribute("proveedores", proveedorService.proveedorSel());
         model.addAttribute("productos", productoService.productoSel());
         model.addAttribute("almacenes", almacenService.almacenSel()); // Para seleccionar productos
+        model.addAttribute("historial", historialCompraService.listarHistorial());
         return "compras"; // Thymeleaf o JSP
     }
 
