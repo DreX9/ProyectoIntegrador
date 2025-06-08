@@ -33,7 +33,7 @@
                                     <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="tipoPresentacion" class="form-label">Tipo de Presentación</label required>
+                                    <label for="tipoPresentacion" class="form-label">Tipo de Presentación</label>
                                     <input type="text" class="form-control" id="tipoPresentacion"
                                         th:field="*{presentacion}">
                                     <span th:if="${#fields.hasErrors('presentacion')}" th:errors="*{presentacion}" style="color: red;"></span>

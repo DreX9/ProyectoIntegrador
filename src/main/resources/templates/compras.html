@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Compras</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" />
 </head>
 
 <body>
@@ -18,123 +17,161 @@
 
             <!-- Contenido principal -->
             <main class="col py-3">
-                <section class="card mb-4 border-0 shadow-sm">
-                    <header class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Sistema de Compras</h5>
-                    </header>
-                    <div class="card-body">
-                        <form id="comprasForm" action="#" th:action="@{/compras/save}" th:object="${detalle}" method="post">
-
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label for="precioUnitario" class="form-label">Precio Unitario</label>
-                                    <input type="text" class="form-control numeric-only" id="precioUnitario"
-                                        name="precioUnitario">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="almacen" class="form-label">Almacén</label>
-                                    <select class="form-select" id="almacen" name="almacen" th:field="*{almacen}">
-                                        <option value="" disabled selected>Seleccionar</option>
-                                        <option th:each="a : ${almacenes}" th:value="${a.id}"
-                                            th:text="${a.nombre}">
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="peso" class="form-label">Peso (Kg)</label>
-                                    <input type="text" class="form-control numeric-only" id="peso" name="peso">
-                                </div>
+                <div class="container py-4">
+                    <h2>Registrar Compra</h2>
+                    <form th:action="@{/compras/save}" th:object="${compra}" method="post">
+                        <div class="row mb-3">
+                            <!-- Proveedor -->
+                            <div class="col-md-6">
+                                <label class="form-label">Proveedor</label>
+                                <select class="form-select" th:field="*{proveedor.id}" required>
+                                    <option value="" disabled selected>Seleccionar proveedor</option>
+                                    <option th:each="p : ${proveedores}" th:value="${p.id}" th:text="${p.nombre}">
+                                    </option>
+                                </select>
                             </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label for="producto" class="form-label">Producto</label>
-                                    <select class="form-select" id="producto" name="producto" th:field="*{producto}">
-                                        <option value="" disabled selected>Seleccionar</option>
-                                        <option th:each="p : ${productos}" th:value="${p.id}"
-                                            th:text="${p.nombre}">
-                                        </option>
-                                    </select>
-                                </div>
+                            <!-- Almacén -->
+                            <div class="col-md-6">
+                                <label class="form-label">Almacen</label>
+                                <select id="almacen" class="form-select">
+                                    <option value="" disabled selected>Seleccionar</option>
+                                    <option th:each="alma : ${almacenes}" th:value="${alma.id}"
+                                        th:text="${alma.nombre}"></option>
+                                </select>
+                            </div>
+                        </div>
 
-                                <div class="col-md-4">
-                                    <label class="form-label">Clasificación</label>
-                                    <p ></p>
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label class="form-label">Presentación</label>
-                                    <p></p>
-                                </div>
+                        <!-- Detalles: campos + botón Agregar -->
+                        <div class="row g-2 align-items-end mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Producto</label>
+                                <select id="producto" class="form-select">
+                                    <option value="" disabled selected>Seleccionar</option>
+                                    <option th:each="prod : ${productos}" th:value="${prod.id}"
+                                        th:text="${prod.nombre}"></option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Precio Unitario</label>
+                                <input type="number" step="0.01" id="precioUnitario" class="form-control" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Cantidad</label>
+                                <input type="number" id="cantidad" class="form-control" />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Peso (Kg)</label>
+                                <input type="number" step="0.01" id="pesoTotal" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Fecha Compra</label>
+                                <input type="date" class="form-control" id="fechaCompra" name="fechaCompra"
+                                    th:value="${compra.fechaCompra}" />
                             </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label for="cantidad" class="form-label">Cantidad</label>
-                                    <input type="text" class="form-control numeric-only" id="cantidad" name="cantidad">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="stockDisponible" class="form-label">Stock Disponible</label>
-                                    <input type="text" class="form-control" id="stockDisponible" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="fechaCompra" class="form-label">Fecha de Compra</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="fechaCompra" name="fechaCompra"
-                                            placeholder="DD/MM/AAAA">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-calendar"></i>
-                                        </span>
-                                    </div>
-                                </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-success w-100" id="btnAgregar">
+                                    <i class="bi bi-plus"></i>
+                                </button>
                             </div>
+                        </div>
 
-                            <div class="row mb-3">
-                                <div class="col-12 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary" id="btnComprar">Comprar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </section>
-
-
-
-                <section class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover" id="comprasTable">
+                        <!-- Tabla de detalles -->
+                        <div class="table-responsive mb-3">
+                            <table class="table table-bordered" id="tablaDetalles">
                                 <thead class="table-dark">
                                     <tr>
-                                        <th>Proveedor</th>
-                                        <th>Clasificación</th>
                                         <th>Producto</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Peso</th>
+                                        <th>Precio</th>
                                         <th>Cantidad</th>
+                                        <th>Peso</th>
+                                        <th>Fecha Compra</th>
                                         <th>Almacen</th>
-                                        <th>Fecha de Compra</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <!-- Los datos se cargarán dinámicamente -->
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
-                    </div>
-                </section>
+
+                        <!-- Campos ocultos -->
+                        <div id="detallesHiddenInputs"></div>
+
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Guardar Compra</button>
+                            <button type="button" class="btn btn-danger" id="btnLimpiar">Limpiar Detalles</button>
+                        </div>
+                    </form>
+                </div>
             </main>
         </div>
     </div>
-    <footer class="mt-auto border-0 py-3 bg-dark text-white text-center">
-        <div class="container">
-            <span>Sistema de Gestión de Compras © 2025</span>
-        </div>
-    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
-    <script src="/js/main.js"></script>
+    <!-- JS -->
+    <script>
+        let contador = 0;
+        const compraFecha = document.getElementById('fechaCompra');
+
+        document.getElementById('btnAgregar').addEventListener('click', () => {
+            const prodSel = document.getElementById('producto');
+            const productoId = prodSel.value;
+            const productoNombre = prodSel.options[prodSel.selectedIndex]?.text;
+
+            const almaSel = document.getElementById('almacen');
+            const almacenId = almaSel.value;
+            const almacenNombre = almaSel.options[almaSel.selectedIndex]?.text;
+
+            const precio = document.getElementById('precioUnitario').value;
+            const cantidad = document.getElementById('cantidad').value;
+            const peso = document.getElementById('pesoTotal').value;
+            const fecha = compraFecha.value;
+
+            if (!productoId || !almacenId || !precio || !cantidad || !peso || !fecha) {
+                alert('Completa todos los campos.');
+                return;
+            }
+
+            // Agregar fila a la tabla
+            const fila = document.querySelector('#tablaDetalles tbody').insertRow();
+            fila.innerHTML = `
+        <td>${productoNombre}</td>
+        <td>${precio}</td>
+        <td>${cantidad}</td>
+        <td>${peso}</td>
+        <td>${fecha}</td>
+        <td>${almacenNombre}</td>
+        <td><button type="button" class="btn btn-danger btn-sm" onclick="removeDetailRow(this, ${contador})">Eliminar</button></td>
+    `;
+
+            // Campos ocultos
+            const div = document.createElement('div');
+            div.id = `detalle-${contador}`;
+            div.innerHTML = `
+        <input type="hidden" name="detalles[${contador}].producto.id" value="${productoId}" />
+        <input type="hidden" name="detalles[${contador}].precioUnitario" value="${precio}" />
+        <input type="hidden" name="detalles[${contador}].cantidad" value="${cantidad}" />
+        <input type="hidden" name="detalles[${contador}].pesoTotal" value="${peso}" />
+        <input type="hidden" name="detalles[${contador}].fechaCompra" value="${fecha}" />
+        <input type="hidden" name="detalles[${contador}].almacen.id" value="${almacenId}" />
+    `;
+            document.getElementById('detallesHiddenInputs').appendChild(div);
+
+            contador++;
+        });
+        function removeDetailRow(button, index) {
+        // Elimina la fila de la tabla
+        const row = button.closest('tr');
+        row.remove();
+
+        // Elimina los inputs ocultos correspondientes
+        const hiddenDiv = document.getElementById(`detalle-${index}`);
+        if (hiddenDiv) {
+            hiddenDiv.remove();
+        }};
+        
+    </script>
 </body>
 
 </html>
