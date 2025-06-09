@@ -2,6 +2,7 @@ package com.example.integrador.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.integrador.entities.Cliente;
 import com.example.integrador.services.ClienteService;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor; 
 
 @Controller
 @RequestMapping("clientes")
@@ -28,7 +30,13 @@ public class ClienteController {
         return "clientes";
     }
     @PostMapping("/save")
-    public String guardarCliente(@ModelAttribute Cliente cliente) {
+    public String guardarCliente(@Valid @ModelAttribute Cliente cliente,BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            //Aseguras de que el objeto  clasificacion esté en el modelo
+            model.addAttribute("clasificacion", cliente);
+            model.addAttribute("lista",service.clienteSel());   
+            return "clientes";
+        }
         service.clienteInsertUpdate(cliente);
         return "redirect:/clientes";
     }

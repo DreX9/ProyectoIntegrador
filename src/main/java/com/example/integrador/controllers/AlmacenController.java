@@ -2,6 +2,7 @@ package com.example.integrador.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.integrador.entities.Almacen;
 import com.example.integrador.services.AlmacenService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -27,7 +29,12 @@ public class AlmacenController {
     }
 
     @PostMapping("/save")
-    public String guardarAlmacen(@ModelAttribute Almacen almacen){
+    public String guardarAlmacen(@Valid @ModelAttribute Almacen almacen, BindingResult result, Model model){
+        if (result.hasErrors()) {
+            model.addAttribute("almacenes", almacen);
+            model.addAttribute("lista",service.almacenSel());   
+            return "almacenes";
+        }
         service.almacenInsertUpdate(almacen);
         return "redirect:/almacenes";
     }

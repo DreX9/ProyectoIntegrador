@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row flex-nowrap">
             <!-- Barra de navegación lateral -->
-            <header th:replace="~{/fragments/template :: header}"></header>
+            <header th:replace="~{/fragments/template :: header('Almacenes')}"></header>
 
             <!-- Contenido principal -->
             <main class="col py-3">
@@ -27,22 +27,22 @@
                             <input type="hidden" th:field="*{id}"/>
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="nombreAlmacen" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="nombreAlmacen" th:field="*{nombre}" required
-                                    >
+                                    <label for="nombre" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required>
+                                    <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;"></span>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="direccionAlmacen" class="form-label">Dirección</label>
-                                    <input type="text" class="form-control" id="direccionAlmacen" th:field="*{direccion}" required
-                                    >
+                                    <label for="direccion" class="form-label">Dirección</label>
+                                    <input type="text" class="form-control" id="direccion" th:field="*{direccion}" required>
+                                    <span th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}" style="color: red;"></span>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-12">
-                                    <label for="descripcionAlmacen" class="form-label">Descripción</label>
-                                    <input type="text" class="form-control" id="descripcionAlmacen" th:field="*{descripcion}" required
-                                    >
+                                    <label for="descripcion" class="form-label">Descripción</label>
+                                    <input type="text" class="form-control" id="descripcion" th:field="*{descripcion}" required>
+                                    <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" style="color: red;"></span>
                                 </div>
                             </div>
 

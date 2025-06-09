@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +20,9 @@ public class Rol {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_rol")
     private Integer id;
-    @Column(name = "nombre_rol")
+    @NotBlank(message="El nombre es obligatorio")
+    @Size(max=100, message="El nombre debe tener menos de 100 caracteres")
+    @Column(name = "nombre_rol", nullable = false)
     private String nombre;
 
 }

@@ -2,6 +2,7 @@ package com.example.integrador.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.integrador.entities.Proveedor;
 import com.example.integrador.services.ProveedorService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -27,7 +29,13 @@ public class ProveedorController {
         return "proveedores";
     }
     @PostMapping("/save")
-    public String guardarProveedor(@ModelAttribute Proveedor proveedor){
+    public String guardarProveedor(@Valid @ModelAttribute Proveedor proveedor, BindingResult result, Model model){
+        if (result.hasErrors()) {
+            //Aseguras de que el objeto  clasificacion esté en el modelo
+            model.addAttribute("clasificacion", proveedor);
+            model.addAttribute("lista",service.proveedorSel());   
+            return "proveedores";
+        }
         service.proveedorInsertUpdate(proveedor);
         return "redirect:/proveedores";
     }

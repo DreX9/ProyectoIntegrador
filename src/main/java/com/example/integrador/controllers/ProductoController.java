@@ -2,6 +2,7 @@ package com.example.integrador.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import com.example.integrador.entities.Producto;
 import com.example.integrador.services.ClasificacionService;
 import com.example.integrador.services.ProductoService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -29,7 +31,13 @@ public class ProductoController {
         return "productos";
     }
     @PostMapping("/save")
-    public String guardarProducto(@ModelAttribute Producto producto){
+    public String guardarProducto(@Valid @ModelAttribute Producto producto,BindingResult result, Model model){
+        if (result.hasErrors()) {
+            //Aseguras de que el objeto  clasificacion esté en el modelo
+            model.addAttribute("clasificacion", producto);
+            model.addAttribute("lista",service.productoSel());   
+            return "productos";
+        }
         service.productoInsertUpdate(producto);
         return "redirect:/productos";
     }
