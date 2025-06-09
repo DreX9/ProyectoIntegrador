@@ -1,11 +1,13 @@
 package com.example.integrador.entities;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,7 +36,7 @@ public class Compra {
      @Column(name = "fecha_compra", insertable = false, updatable = false)
     private LocalDate fechaCompra;
     private Double total;
-    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL)
-    private List<DetalleCompra> detalles;
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetalleCompra> detalles = new ArrayList<>();
 
 }
