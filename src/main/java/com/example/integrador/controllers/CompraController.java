@@ -42,7 +42,7 @@ public class CompraController {
         model.addAttribute("productos", productoService.productoSel());
         model.addAttribute("almacenes", almacenService.almacenSel()); // Para seleccionar productos
         model.addAttribute("historial", historialCompraService.listarHistorial());
-        return "compras"; // Thymeleaf o JSP
+        return "compras"; // Thymeleaf 
     }
 
     @PostMapping("/save")
