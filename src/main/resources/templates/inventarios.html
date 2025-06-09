@@ -13,91 +13,169 @@
 <body>
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <!-- Barra de navegación lateral -->
+            <!-- Fragmento de header -->
             <header th:replace="~{/fragments/template :: header('Inventarios')}"></header>
 
             <!-- Contenido principal -->
             <main class="col py-3">
                 <section class="card mb-4 border-0 shadow-sm">
                     <header class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Sistema de Inventario</h5>
+                        <h5 class="mb-0">Resumen de Stock por Producto</h5>
                     </header>
                     <div class="card-body">
-                        <form id="inventarioForm" action="#" method="post">
-                            <div class="row mb-3 align-items-end">
-                                <div class="col-md-3">
-                                    <label for="producto" class="form-label">Producto</label>
-                                    <select class="form-select" id="producto" name="producto">
-                                        <option value="" selected>Seleccionar</option>
-                                        <option value="1">Producto 1</option>
-                                        <option value="2">Producto 2</option>
-                                        <option value="3">Producto 3</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="desde" class="form-label">Desde</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="desde" name="desde"
-                                            placeholder="DD/MM/AAAA">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-calendar"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="hasta" class="form-label">Hasta</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="hasta" name="hasta"
-                                            placeholder="DD/MM/AAAA">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-calendar"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-md-3 text-end">
-                                    <button type="button" class="btn btn-primary" id="btnVerKardex">Visualizar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </section>
-
-                <section class="card border-0 shadow-sm">
-                    <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped table-hover" id="kardexTable">
+                            <table id="tablaStock" class="table table-bordered table-hover">
                                 <thead class="table-dark">
-                                    <tr> 
-                                        <th>Fecha</th>
-                                        <th>Tipo</th>
-                                        <th>Doc</th>
-                                        <th>Entrada</th>
-                                        <th>Salida</th>
-                                        <th>Saldo</th>
+                                    <tr>
+                                        <th>ID Producto</th>
+                                        <th>Nombre del Producto</th>
+                                        <th>Stock Total</th>
+                                        <th>Peso Total</th>
+                                        <th>Próxima Caducidad</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Los datos se cargarán dinámicamente -->
+                                    <tr th:each="producto : ${listar}">
+                                        <td th:text="${producto.id}">1</td>
+                                        <td th:text="${producto.nombre}">Producto A</td>
+                                        <td th:text="${producto.stock}">50</td>
+                                        <td th:text="${producto.total}">50</td>
+                                        <td th:text="${#dates.format(producto.caducidad, 'dd/MM/yyyy')}">12/08/2025</td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(listar)}">
+                                        <td colspan="4" class="text-center">No hay productos en stock.</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="text-end mt-3">
-                            <button type="button" class="btn btn-secondary" id="btnExportarKardex">Exportar Kardex</button>
+                    </div>
+
+
+                </section>
+                <!-- Sección 2: Detalle de Inventario -->
+                <section class="card mb-4 border-0 shadow-sm">
+                    <header class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">Detalle de Inventario</h5>
+                    </header>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>ID Inventario</th>
+                                        <th>Producto</th>
+                                        <th>Almacén</th>
+                                        <th>Precio Unitario</th>
+                                        <th>Subtotal</th>
+                                        <th>Fecha Compra</th>
+                                        <th>Fecha Caducidad</th>
+                                        <th>Cantidad</th>
+                                        <th>Peso Disponible (kg)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="d : ${detalle}">
+                                        <td th:text="${d.id}">1</td>
+                                        <td th:text="${d.nombrePro}">Arroz</td>
+                                        <td th:text="${d.nombreAlma}">Almacén Central</td>
+                                        <td th:text="${d.precio}">3.50</td>
+                                        <td th:text="${d.subtotal}">70.00</td>
+                                        <td th:text="${#dates.format(d.fechaCompra, 'dd/MM/yyyy')}">01/06/2025</td>
+                                        <td th:text="${#dates.format(d.fechaCaducidad, 'dd/MM/yyyy')}">01/12/2025</td>
+                                        <td th:text="${d.cantidad}">20</td>
+                                        <td th:text="${d.pesoTotal}">40.00</td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(detalle)}">
+                                        <td colspan="9" class="text-center">No hay registros detallados en el
+                                            inventario.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </section>
+
             </main>
         </div>
     </div>
+
     <footer class="mt-auto border-0 py-3 bg-dark text-white text-center">
         <div class="container">
             <span>Sistema de Gestión © 2025</span>
         </div>
     </footer>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const filas = document.querySelectorAll("#tablaStock tbody tr");
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0); // Comparar solo fechas
 
+            filas.forEach((fila) => {
+                const celdaPeso = fila.children[3];
+                const celdaFecha = fila.children[4];
+
+                const pesoTexto = celdaPeso.textContent.trim();
+                const peso = parseFloat(pesoTexto);
+
+                const fechaTexto = celdaFecha.textContent.trim(); // Formato: dd/MM/yyyy
+                const [dia, mes, anio] = fechaTexto.split("/").map(num => parseInt(num));
+                const fechaCaducidad = new Date(anio, mes - 1, dia);
+                fechaCaducidad.setHours(0, 0, 0, 0);
+
+                // Estado de alerta para mostrar mensaje solo una vez
+                let mostrarAlerta = false;
+
+                // 🔴 Peso crítico
+                if (!isNaN(peso)) {
+                    if (peso < 10) {
+                        marcarFila(fila, celdaPeso, "¡Producto con menos de 10 kg!", "bi-exclamation-triangle-fill", "#dc3545");
+                        mostrarAlerta = true;
+                    } else if (peso >= 10 && peso < 20) {
+                        agregarIcono(celdaPeso, "Quedan menos de 20 kg", "bi-exclamation-triangle-fill", "#ffc107");
+                    }
+                }
+
+                // 🔴 Fecha crítica (caduca hoy)
+                const diferenciaDias = (fechaCaducidad - hoy) / (1000 * 60 * 60 * 24);
+                if (diferenciaDias === 0) {
+                    marcarFila(fila, celdaFecha, "¡Producto caduca hoy!", "bi-calendar-x-fill", "#dc3545");
+                    mostrarAlerta = true;
+                } else if (diferenciaDias === 1) {
+                    agregarIcono(celdaFecha, "Caduca mañana", "bi-calendar-event", "#ffc107");
+                }
+
+                if (mostrarAlerta && !window.alertaMostrada) {
+                    alert("¡Atención! Hay productos con problemas críticos (peso o caducidad).");
+                    window.alertaMostrada = true;
+                }
+            });
+
+            // 🔧 Marca la fila en rojo y agrega ícono en la celda correspondiente
+            function marcarFila(fila, celda, mensaje, iconoClase, color) {
+                fila.style.backgroundColor = "#f8d7da";
+                fila.style.color = "#721c24";
+
+                const icono = document.createElement("i");
+                icono.className = `bi ${iconoClase} me-2`;
+                icono.style.color = color;
+                icono.title = mensaje;
+
+                celda.prepend(icono);
+            }
+
+            // 🔧 Solo agrega un ícono sin marcar fila
+            function agregarIcono(celda, mensaje, iconoClase, color) {
+                const icono = document.createElement("i");
+                icono.className = `bi ${iconoClase} me-2`;
+                icono.style.color = color;
+                icono.title = mensaje;
+
+                celda.prepend(icono);
+            }
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
-    <script src="/js/main.js"></script>
 </body>
 
 </html>
