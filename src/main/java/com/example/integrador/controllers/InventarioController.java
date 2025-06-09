@@ -22,5 +22,4 @@ public class InventarioController {
         model.addAttribute("detalle", detalleService.inventarioDetalleSel() );
         return "inventarios";
     }
-
 }
