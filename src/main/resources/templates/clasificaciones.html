@@ -41,6 +41,12 @@
                             </div>
                             
                             <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="pesoPresentacion" class="form-label">Peso de la presentacion</label>
+                                    <input type="number" class="form-control" id="pesoPresentacion"
+                                        th:field="*{peso}">
+                                    <span th:if="${#fields.hasErrors('peso')}" th:errors="*{peso}" style="color: red;"></span>
+                                </div>
                                 <div class="col-md-12 d-flex justify-content-end">
                                     <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
                                 </div>
@@ -58,6 +64,7 @@
                                         <th>ID</th>
                                         <th>Nombre</th>
                                         <th>Presentación</th>
+                                        <th>Peso</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -66,6 +73,7 @@
                                         <td>[[${clasificacion.id}]]</td>
                                         <td>[[${clasificacion.nombre}]]</td>
                                         <td>[[${clasificacion.presentacion}]]</td>
+                                        <td>[[${clasificacion.peso}]]</td>
                                         <td>
                                             <a th:href="@{/clasificaciones/edit(id=${clasificacion.id})}" class="btn btn-warning">Editar</a>
                                             <form th:action="@{/clasificaciones/delete(id=${clasificacion.id})}" method="post" style="display:inline;">

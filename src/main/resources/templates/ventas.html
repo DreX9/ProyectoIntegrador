@@ -1,145 +1,178 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ventas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" />
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row flex-nowrap">
-            <!-- Barra de navegación lateral -->
             <header th:replace="~{/fragments/template :: header('Ventas')}"></header>
 
-            <!-- Contenido principal -->
             <main class="col py-3">
-                <section class="card mb-4 border-0 shadow-sm">
-                    <header class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Sistema de Ventas</h5>
-                    </header>
-                    <div class="card-body">
-                        <form id="comprasForm" action="#" method="post">
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label for="proveedor" class="form-label">Cliente</label>
-                                    <select class="form-select" id="proveedor" name="proveedor">
-                                        <option value="" selected>Seleccionar</option>
-                                        <option value="1">Cliente 1</option>
-                                        <option value="2">Cliente 2</option>
-                                        <option value="3">Cliente 3</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="precioUnitario" class="form-label">Precio Unitario</label>
-                                    <input type="text" class="form-control numeric-only" id="precioUnitario"
-                                        name="precioUnitario">
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="almacen" class="form-label">Almacén</label>
-                                    <select class="form-select" id="almacen" name="almacen">
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                    </select>
-                                </div>
+                <div class="container py-4">
+                    <h2>Registrar Venta</h2>
+                    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+                    <form th:action="@{/ventas/save}" th:object="${venta}" method="post">
+                        <div class="row mb-3">
+                            <!-- Combo Descuento (por ahora decorativo) -->
+                            <div class="col-md-4">
+                                <label class="form-label">Descuento</label>
+                                <select th:field="*{descuento}" class="form-select">
+                                    <option value="0">Sin descuento</option>
+                                    <option value="0.01">Cliente nuevo (1%)</option>
+                                    <option value="0.05">Cliente ocasional (5%)</option>
+                                    <option value="0.07">Cliente frecuente (7%)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row g-2 align-items-end mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Inventario</label>
+                                <select id="inventario" class="form-select">
+                                    <option value="" disabled selected>Seleccionar</option>
+                                    <option th:each="inv : ${inventarios}" th:value="${inv.id}"
+                                        th:text="${inv.detalleCompra.producto.nombre + ' - ' + inv.almacen.nombre + ' - ' + inv.pesoDisponible + ' kg'}">
+                                    </option>
+                                </select>
                             </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label for="clasificacion" class="form-label">Clasificación</label>
-                                    <select class="form-select" id="clasificacion" name="clasificacion">
-                                        <option value="" selected>Seleccionar</option>
-                                        <option value="1">Clasificación 1</option>
-                                        <option value="2">Clasificación 2</option>
-                                        <option value="3">Clasificación 3</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="peso" class="form-label">Peso (Kg)</label>
-                                    <input type="text" class="form-control numeric-only" id="peso" name="peso">
-                                </div>
-                                <div class="col-md-4"></div>
+                            <div class="col-md-2">
+                                <label class="form-label">Peso a vender (kg)</label>
+                                <input type="number" step="0.01" id="peso" class="form-control" />
                             </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label for="producto" class="form-label">Producto</label>
-                                    <select class="form-select" id="producto" name="producto">
-                                        <option value="" selected>Seleccionar</option>
-                                        <option value="1">Producto 1</option>
-                                        <option value="2">Producto 2</option>
-                                        <option value="3">Producto 3</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="cantidad" class="form-label">Cantidad</label>
-                                    <input type="text" class="form-control numeric-only" id="cantidad" name="cantidad">
-                                </div>
-                                <div class="col-md-4"></div>
+                            <div class="col-md-2">
+                                <label class="form-label">Precio por Kg</label>
+                                <input type="number" step="0.01" id="precio" class="form-control" />
                             </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <label for="stockDisponible" class="form-label">Stock Disponible</label>
-                                    <input type="text" class="form-control" id="stockDisponible" readonly>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="fechaCompra" class="form-label">Fecha de Compra</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="fechaCompra" name="fechaCompra"
-                                            placeholder="DD/MM/AAAA">
-                                        <span class="input-group-text bg-primary text-white">
-                                            <i class="bi bi-calendar"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 d-flex align-items-end justify-content-end">
-                                    <button type="button" class="btn btn-primary" id="btnVender">Vender</button>
-                                </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-success w-100" id="btnAgregar">
+                                    <i class="bi bi-plus"></i>
+                                </button>
                             </div>
-                        </form>
-                    </div>
-                </section>
+                        </div>
 
-                <section class="card border-0 shadow-sm">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover" id="comprasTable">
+                        <!-- Tabla Detalles -->
+                        <div class="table-responsive mb-3">
+                            <table class="table table-bordered" id="tablaDetalles">
                                 <thead class="table-dark">
                                     <tr>
-                                        <th>Cliente</th>
-                                        <th>Clasificación</th>
                                         <th>Producto</th>
-                                        <th>Precio Unitario</th>
-                                        <th>Peso</th>
-                                        <th>Cantidad</th>
                                         <th>Almacen</th>
-                                        <th>Fecha de Compra</th>
+                                        <th>Peso</th>
+                                        <th>Precio</th>
+                                        <th>Subtotal</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <!-- Los datos se cargarán dinámicamente -->
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
-                    </div>
-                </section>
+
+                        <div id="detallesHiddenInputs"></div>
+
+                        <!-- Subtotal y Total -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Subtotal</label>
+                                <input type="text" id="subtotalVenta" class="form-control" readonly />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Total</label>
+                                <input type="text" id="totalVenta" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">Guardar Venta</button>
+                            <button type="button" class="btn btn-danger" id="btnLimpiar">Limpiar Detalles</button>
+                        </div>
+                    </form>
+                </div>
             </main>
         </div>
     </div>
-    <footer class="mt-auto border-0 py-3 bg-dark text-white text-center">
-        <div class="container">
-            <span>Sistema de Gestión de Compras © 2025</span>
-        </div>
-    </footer>
+
+    <script>
+        let contador = 0;
+        let subtotal = 0;
+        const descuentoSelect = document.querySelector("select[name='descuento']");
+
+        document.getElementById('btnAgregar').addEventListener('click', () => {
+            const invSel = document.getElementById('inventario');
+            const invId = invSel.value;
+            const invText = invSel.options[invSel.selectedIndex]?.text;
+
+            const peso = parseFloat(document.getElementById('peso').value);
+            const precio = parseFloat(document.getElementById('precio').value);
+
+            if (!invId || isNaN(peso) || isNaN(precio)) {
+                alert("Completa todos los campos correctamente.");
+                return;
+            }
+
+            const sub = peso * precio;
+            subtotal += sub;
+
+            const fila = document.querySelector('#tablaDetalles tbody').insertRow();
+            fila.innerHTML = `
+                <td>${invText.split(' - ')[0]}</td>
+                <td>${invText.split(' - ')[1]}</td>
+                <td>${peso}</td>
+                <td>${precio}</td>
+                <td>${sub.toFixed(2)}</td>
+                <td><button type="button" class="btn btn-danger btn-sm" onclick="removeDetailRow(this, ${sub}, ${contador})">Eliminar</button></td>
+            `;
+
+            const div = document.createElement('div');
+            div.id = `detalle-${contador}`;
+            div.innerHTML = `
+                <input type="hidden" name="detalles[${contador}].inventario.id" value="${invId}" />
+                <input type="hidden" name="detalles[${contador}].peso" value="${peso}" />
+                <input type="hidden" name="detalles[${contador}].precio" value="${precio}" />
+            `;
+            document.getElementById('detallesHiddenInputs').appendChild(div);
+
+            contador++;
+            actualizarTotales();
+        });
+
+        function removeDetailRow(button, sub, index) {
+            const row = button.closest('tr');
+            row.remove();
+            subtotal -= sub;
+            document.getElementById(`detalle-${index}`).remove();
+            actualizarTotales();
+        }
+
+        function actualizarTotales() {
+            const desc = parseFloat(descuentoSelect.value || 0);
+            const total = subtotal * (1 - desc);
+            document.getElementById('subtotalVenta').value = subtotal.toFixed(2);
+            document.getElementById('totalVenta').value = total.toFixed(2);
+        }
+
+        document.getElementById('btnLimpiar').addEventListener('click', () => {
+            document.querySelector('#tablaDetalles tbody').innerHTML = '';
+            document.getElementById('detallesHiddenInputs').innerHTML = '';
+            subtotal = 0;
+            contador = 0;
+            actualizarTotales();
+        });
+
+        descuentoSelect.addEventListener('change', actualizarTotales);
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
-    <script src="/js/main.js"></script>
 </body>
 
 </html>
