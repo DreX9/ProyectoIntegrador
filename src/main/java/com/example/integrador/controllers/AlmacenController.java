@@ -18,8 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("almacenes")
 @RequiredArgsConstructor
-public class AlmacenController {
-    
+public class AlmacenController {    
     private final AlmacenService service;
     @GetMapping
     public String listaAlmacen(Model model){
@@ -27,7 +26,6 @@ public class AlmacenController {
         model.addAttribute("almacen", new Almacen());
         return "almacenes";
     }
-
     @PostMapping("/save")
     public String guardarAlmacen(@Valid @ModelAttribute Almacen almacen, BindingResult result, Model model){
         if (result.hasErrors()) {

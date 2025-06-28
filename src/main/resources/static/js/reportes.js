@@ -3,7 +3,7 @@ const pieCtx = document.getElementById('pieChart').getContext('2d');
 const pieChart = new Chart(pieCtx, {
     type: 'pie',
     data: {
-        labels: ['Electrónicos', 'Muebles', 'Ropa', 'Alimentos'],
+        labels: ['Pescado congelado', 'Mariscos', 'Algas', 'Pescado Fresco'],
         datasets: [{
             label: 'Ventas por Categoría',
             data: [35, 25, 20, 20],
@@ -40,21 +40,14 @@ const barChart = new Chart(barCtx, {
         labels: ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'],
         datasets: [{
             label: 'Ventas',
-            data: [12, 19, 15, 22, 18],
+            data: [11, 19, 15, 22, 18],
             backgroundColor: 'rgba(54, 162, 235, 0.5)',
             borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }, {
-            label: 'Devoluciones',
-            data: [2, 3, 1, 4, 2],
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            borderColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1
         }]
     },
     options: {
         responsive: true,
-        maintainAspectRatio: false,
         scales: {
             y: {
                 beginAtZero: true
