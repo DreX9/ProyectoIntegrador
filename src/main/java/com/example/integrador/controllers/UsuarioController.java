@@ -23,37 +23,37 @@ public class UsuarioController {
     private final UsuarioService service;
     private final RolService rolService;
 
-    @GetMapping
-    public String listaUsuarios(Model model) {
-        model.addAttribute("lista", service.usuarioSel());
-        model.addAttribute("usuario", new Usuario());
-        model.addAttribute("roles", rolService.rolSel());
-        return "usuarios";
-    }
+    // @GetMapping
+    // public String listaUsuarios(Model model) {
+    //     model.addAttribute("lista", service.usuarioSel());
+    //     model.addAttribute("usuario", new Usuario());
+    //     model.addAttribute("roles", rolService.rolSel());
+    //     return "usuarios";
+    // }
 
-    @PostMapping("/save")
-    public String guardarUsuario(@Valid @ModelAttribute Usuario usuario, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            //Aseguras de que el objeto  clasificacion esté en el modelo
-            model.addAttribute("clasificacion", usuario);
-            model.addAttribute("lista",service.usuarioSel());   
-            return "clientes";
-        }
-        service.usuarioInsertUpdate(usuario);
-        return "redirect:/usuarios";
-    }
+    // @PostMapping("/save")
+    // public String guardarUsuario(@Valid @ModelAttribute Usuario usuario, BindingResult result, Model model) {
+    //     if (result.hasErrors()) {
+    //         //Aseguras de que el objeto  clasificacion esté en el modelo
+    //         model.addAttribute("clasificacion", usuario);
+    //         model.addAttribute("lista",service.usuarioSel());   
+    //         return "clientes";
+    //     }
+    //     service.usuarioInsertUpdate(usuario);
+    //     return "redirect:/usuarios";
+    // }
 
-    @GetMapping("/edit")
-    public String editarUsuario(@RequestParam("id") Integer id, Model model) {
-        model.addAttribute("usuario", service.usuarioSelectOne(id));
-        model.addAttribute("lista", service.usuarioSel()); 
-        model.addAttribute("roles", rolService.rolSel());
-        return "usuarios"; 
-    }
+    // @GetMapping("/edit")
+    // public String editarUsuario(@RequestParam("id") Integer id, Model model) {
+    //     model.addAttribute("usuario", service.usuarioSelectOne(id));
+    //     model.addAttribute("lista", service.usuarioSel()); 
+    //     model.addAttribute("roles", rolService.rolSel());
+    //     return "usuarios"; 
+    // }
 
-    @PostMapping("/delete")
-    public String eliminarUsuario(@RequestParam("id") Integer id) {
-        service.usuarioDelete(id);
-        return "redirect:/usuarios";
-    }
+    // @PostMapping("/delete")
+    // public String eliminarUsuario(@RequestParam("id") Integer id) {
+    //     service.usuarioDelete(id);
+    //     return "redirect:/usuarios";
+    // }
 }

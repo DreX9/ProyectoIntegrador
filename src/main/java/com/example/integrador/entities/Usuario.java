@@ -39,7 +39,7 @@ public class Usuario {
     @Column(nullable = false)
     @NotBlank(message="El correo es obligatorio")
     private String correo;//
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotBlank(message="El telefono es obligatorio")
     @Size(max=9, message="El telefono debe tener menos de 10 caracteres")
     private String telefono;//
@@ -48,7 +48,7 @@ public class Usuario {
     @Size(max=8, message="El dni debe tener menos de 9 caracteres")
     private String dni;//
     @NotBlank(message="El usuario es obligatorio")
-    @Size(max=50, message="El dni debe tener menos de 50 caracteres")
+    @Size(max=50, message="El nombnre de usuario debe tener al menos 10 caracteres")
     @Column(name = "usuario", nullable = false)    
     private String usuarioName;//
     @NotBlank(message="La contraseña es obligatoria")
