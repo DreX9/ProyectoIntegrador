@@ -1,0 +1,41 @@
+body.error-page {
+    background: linear-gradient(135deg, #e3f2fd, #b9f7ff);
+}
+
+.error-container {
+    background-color: #ffffff;
+    border-left: 8px solid #0372b3;
+    max-width: 500px;
+}
+
+.error-container h1 {
+    font-size: 6rem;
+}
+
+.btn-outline-primary {
+    border-color: #0372b3;
+    color: #0372b3;
+}
+
+.btn-outline-primary:hover {
+    background-color: #0372b3;
+    color: #fff;
+}
+.btn-outline-secondary {
+    border-color: #0288d1;
+    color: #0288d1;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #0288d1;
+    color: #fff;
+}
+.error-container form {
+    margin: 0;
+}
+
+/* Asegura que los botones dentro del formulario luzcan igual */
+.error-container form .btn {
+    min-width: 180px;
+    margin-top: 0;
+}

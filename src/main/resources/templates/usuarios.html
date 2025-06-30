@@ -25,6 +25,7 @@
                     <div class="card-body">
                         <form id="comprasForm" th:action="@{/usuarios/save}" method="post" th:object="${usuario}">
                             <input type="hidden" th:field="*{id}" />
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="nombre" class="form-label">Nombre</label>
@@ -117,7 +118,6 @@
                                         <th>Fecha de registro</th>
                                         <th>Rol</th>
                                         <th>Usuario</th>
-                                        <th>Contraseña</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
@@ -133,7 +133,6 @@
                                         <td>[[${usuario.registro}]]</td>
                                         <td>[[${usuario.rol.nombre}]]</td>
                                         <td>[[${usuario.usuarioName}]]</td>
-                                        <td>[[${usuario.contrasena}]]</td>
                                         <td>
                                             <a th:href="@{/usuarios/edit(id=${usuario.id})}"
                                                 class="btn btn-warning">Editar</a>

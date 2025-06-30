@@ -12,8 +12,5 @@ public class NavigatorController {
     public String reportes() {
         return "reportes";
     }
-    @GetMapping("/login")
-    public String index() {
-        return "index";
-    }
+    
 }
