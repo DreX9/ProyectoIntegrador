@@ -2,8 +2,6 @@ package com.example.integrador.controllers;
 
 import java.security.Principal;
 import java.util.Optional;
-
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +19,6 @@ import com.example.integrador.services.UsuarioService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 
 @Controller
 @RequestMapping("usuarios")

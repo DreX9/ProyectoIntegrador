@@ -31,7 +31,7 @@ public class Venta {
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
-    @Column(name = "fecha_venta")
+    @Column(name = "fecha_venta" , insertable = false, updatable = false)
     private LocalDate fechaVenta;
     @Column(name = "total")
     private Double total;

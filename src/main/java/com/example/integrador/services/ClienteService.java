@@ -1,6 +1,7 @@
 package com.example.integrador.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,6 @@ public class ClienteService {
         return repository.findById(id).orElse(null);
     }
 
-    
     public Cliente clienteInsertUpdate(Cliente cliente) {
         return repository.save(cliente);
     }
@@ -34,5 +34,13 @@ public class ClienteService {
 
     public long contarClientes() {
         return repository.count();
+    }
+
+    public Optional<Cliente> buscarPorDniONombre(String filtro) {
+        return repository.findByDniOrNombreContainingIgnoreCase(filtro, filtro);
+    }
+
+    public Optional<Cliente> clienteidOptional(Integer id) {
+        return repository.findById(id);
     }
 }

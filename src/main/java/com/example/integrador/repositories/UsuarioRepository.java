@@ -9,4 +9,5 @@ import com.example.integrador.entities.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>{
 
     Optional<Usuario> findByUsuarioName(String user);
+
 }

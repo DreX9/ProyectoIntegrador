@@ -18,8 +18,38 @@
                 <div class="container py-4">
                     <h2>Registrar Venta</h2>
                     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+                    <!-- Formulario de búsqueda de cliente -->
+                    <form th:action="@{/ventas/buscarCliente}" method="post" class="row g-2 mb-4">
+                        <div class="col-md-4">
+                            <label class="form-label">Buscar cliente por DNI</label>
+                            <input type="text" name="filtro" class="form-control" placeholder="Ej: 12345678" required />
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-secondary">Buscar</button>
+                        </div>
+                    </form>
 
+                    <!-- Datos del cliente encontrado -->
+                    <div class="row mb-3" th:if="${cliente}">
+                        <div class="col-md-4">
+                            <label class="form-label">Nombre</label>
+                            <input type="text" class="form-control"
+                                th:value="${cliente.nombre + ' ' + cliente.apellido}" readonly />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Correo</label>
+                            <input type="text" class="form-control" th:value="${cliente.correo}" readonly />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Teléfono</label>
+                            <input type="text" class="form-control" th:value="${cliente.telefono}" readonly />
+                        </div>
+                       
+
+                    </div>
                     <form th:action="@{/ventas/save}" th:object="${venta}" method="post">
+                        <input type="hidden" th:field="*{cliente.id}" />
+                        <input type="hidden" th:field="*{fechaVenta}" />
                         <div class="row mb-3">
                             <!-- Combo Descuento (por ahora decorativo) -->
                             <div class="col-md-4">

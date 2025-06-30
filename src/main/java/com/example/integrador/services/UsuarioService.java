@@ -2,8 +2,6 @@ package com.example.integrador.services;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.integrador.entities.Usuario;
@@ -39,6 +37,8 @@ public class UsuarioService {
     public void eliminarUsuario(Integer id) {
         repository.deleteById(id);
     }
+
+    
     // public List<Usuario> usuarioSel(){
     // return repository.findAll();
     // }

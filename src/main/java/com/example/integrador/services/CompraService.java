@@ -1,14 +1,9 @@
 package com.example.integrador.services;
-
-import java.time.LocalDateTime;
 import java.util.List;
-
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.integrador.entities.Compra;
 import com.example.integrador.entities.DetalleCompra;
-import com.example.integrador.entities.Producto;
 import com.example.integrador.repositories.CompraRepository;
 import com.example.integrador.repositories.DetalleCompraRepository;
 import com.example.integrador.repositories.ProductoRepository;
