@@ -1,4 +1,5 @@
 package com.example.integrador.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,36 +30,53 @@ public class SegurityConfig {
 
         @Bean
         SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                http.authorizeHttpRequests(
-                                auth -> auth
-                                                // paginas publicas
-                                                .requestMatchers("/", "/login", "/403", "/css/**", "/js/**",
-                                                                "/images/**")
-                                                .permitAll()
-                                                // primero la más específica
-                                                .requestMatchers(HttpMethod.POST, "/usuarios/save")
-                                                .hasAnyAuthority("Administrador", "Almacenista")
+                http.authorizeHttpRequests(auth -> auth
+                                // 📂 Recursos estáticos y páginas públicas
+                                .requestMatchers("/", "/login", "/403", "/css/**", "/js/**", "/images/**").permitAll()
 
-                                                // luego la general
-                                                .requestMatchers("/usuarios/**")
-                                                .hasAnyAuthority("Administrador", "Almacenista")
+                                // 🧑‍💼 Usuarios: solo el ADMIN
+                                .requestMatchers("/usuarios/**").hasAuthority("Administrador")
 
-                                                // resto de páginas por rol
-                                                .requestMatchers("/compras").hasAuthority("Administrador")
-                                                .requestMatchers("/ventas").hasAuthority("Vendedor")
-                                                .requestMatchers("/almacenes").hasAuthority("Almacenista")
+                                // 🏪 Almacenes: ADMIN y ALMACENISTA
+                                .requestMatchers("/almacenes/**").hasAnyAuthority("Administrador", "Almacenista")
 
-                                                .anyRequest().authenticated())
+                                // 📦 Compras: ADMIN y ALMACENISTA
+                                .requestMatchers("/compras/**").hasAnyAuthority("Administrador", "Almacenista")
+
+                                // 🐟 Productos y clasificaciones: ADMIN y ALMACENISTA pueden ver y gestionar
+                                .requestMatchers("/productos/**", "/clasificaciones/**")
+                                .hasAnyAuthority("Administrador", "Almacenista")
+
+                                // 📤 Ventas: ADMIN y VENDEDOR
+                                .requestMatchers("/ventas/**").hasAnyAuthority("Administrador", "Vendedor")
+
+                                // 👥 Clientes: ADMIN y VENDEDOR
+                                .requestMatchers("/clientes/**").hasAnyAuthority("Administrador", "Vendedor")
+
+                                // 🚚 Proveedores: ADMIN y ALMACENISTA
+                                .requestMatchers("/proveedores/**").hasAnyAuthority("Administrador", "Almacenista")
+
+                                // 📊 Inventario: solo ADMIN y ALMACENISTA
+                                .requestMatchers("/inventarios/**").hasAnyAuthority("Administrador", "Almacenista")
+
+                                // 📈 Kardex: solo ADMIN (puedes incluir almacenista si lo deseas como consulta)
+                                .requestMatchers("/kardexs/**").hasAuthority("Administrador")
+
+                                // Cualquier otra ruta requiere autenticación
+                                .anyRequest().authenticated())
+                                // Configuración de login
                                 .formLogin(login -> login
-                                                .loginPage("/login") // <- tu página personalizada de login
+                                                .loginPage("/login")
                                                 .successHandler(successHandler)
                                                 .permitAll())
+                                // Configuración de logout
                                 .logout(logout -> logout
                                                 .logoutSuccessUrl("/login?logout")
                                                 .permitAll())
+                                // Manejo de errores de acceso
                                 .exceptionHandling(exception -> exception
-                                                .accessDeniedPage("/403") // <- página de acceso denegado
-                                );
+                                                .accessDeniedPage("/403"));
+
                 return http.build();
         }
 }
