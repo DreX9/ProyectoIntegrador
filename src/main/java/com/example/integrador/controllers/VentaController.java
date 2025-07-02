@@ -43,7 +43,7 @@ public class VentaController {
         venta.setDetalles(new ArrayList<>()); // Necesario para binding en el formulario
 
         model.addAttribute("venta", venta);
-        model.addAttribute("inventarios", inventarioService.listarInventarioDisponible());
+        model.addAttribute("inventarios", inventarioService.listarInventarioDisponibleAgrupado());
         model.addAttribute("clientes", clienteService.clienteSel()); // puede quedar vacío de momento
         model.addAttribute("almacenes", almacenService.almacenSel());
         return "ventas"; // Tu archivo Thymeleaf: ventas.html
@@ -104,7 +104,7 @@ public class VentaController {
         }
 
         model.addAttribute("venta", venta);
-        model.addAttribute("inventarios", inventarioService.listarInventarioDisponible());
+        model.addAttribute("inventarios", inventarioService.listarInventarioDisponibleAgrupado());
         model.addAttribute("clientes", clienteService.clienteSel());
         model.addAttribute("almacenes", almacenService.almacenSel());
 

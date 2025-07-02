@@ -3,14 +3,17 @@ package com.example.integrador.controllers;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.core.Authentication;
 
 import com.example.integrador.entities.Compra;
+import com.example.integrador.entities.Usuario;
 import com.example.integrador.services.AlmacenService;
 import com.example.integrador.services.CompraService;
 import com.example.integrador.services.HistorialCompraService;
@@ -47,7 +50,16 @@ public class CompraController {
 
     @PostMapping("/save")
     public String guardarCompra(@ModelAttribute Compra compra) {
-        // compra.setUsuario(usuarioService.usuarioActual());
+        // 1. Obtener el username del usuario logueado
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    String username = auth.getName(); // ← este es el email/username del usuario
+
+    // 2. Buscar el usuario en la base de datos
+    Usuario usuario = usuarioService.buscarPorUsername(username)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+    // 3. Asignar el usuario a la compra
+    compra.setUsuario(usuario);
 
         compraService.registrarCompra(compra);
         return "redirect:/compras";

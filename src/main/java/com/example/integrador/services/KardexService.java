@@ -124,7 +124,7 @@ public class KardexService {
                 } else {
                     double pesoSalida = mov.getPeso();
                     double costoTotalSalida = 0;
-
+                    double pesoOriginal = pesoSalida;
                     // FIFO (PEPS)
                     while (pesoSalida > 0 && !saldos.isEmpty()) {
                         Lote lote = saldos.get(0);
@@ -138,9 +138,9 @@ public class KardexService {
                             pesoSalida = 0;
                         }
                     }
-
+                    double costoUnitarioSalida = pesoOriginal != 0 ? costoTotalSalida / pesoOriginal : 0;
                     row.createCell(5).setCellValue(mov.getPeso());
-                    row.createCell(6).setCellValue(mov.getPrecioUnitario());
+                    row.createCell(6).setCellValue(costoUnitarioSalida);
                     row.createCell(7).setCellValue(costoTotalSalida);
                 }
 

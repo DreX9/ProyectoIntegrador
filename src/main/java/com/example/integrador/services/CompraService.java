@@ -1,4 +1,5 @@
 package com.example.integrador.services;
+
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CompraService {
 
-     private final CompraRepository compraRepository;
+    private final CompraRepository compraRepository;
     private final DetalleCompraRepository detalleCompraRepository;
     private final ProductoRepository productoRepository;
 
@@ -27,7 +28,7 @@ public class CompraService {
         return compraRepository.findById(id).orElse(new Compra());
     }
 
-     @Transactional
+    @Transactional
     public void registrarCompra(Compra compra) {
         List<DetalleCompra> detalles = compra.getDetalles();
 
@@ -47,8 +48,8 @@ public class CompraService {
         }
 
         double montoTotal = detalles.stream()
-            .mapToDouble(DetalleCompra::getSubtotal)
-            .sum();
+                .mapToDouble(DetalleCompra::getSubtotal)
+                .sum();
 
         compra.setTotal(montoTotal);
         compraRepository.save(compra);
@@ -63,11 +64,24 @@ public class CompraService {
         }
 
         if (detalle.getPrecioUnitario() == null || detalle.getPrecioUnitario() <= 0) {
-            throw new RuntimeException("Precio unitario inválido para el producto: " + detalle.getProducto().getNombre());
+            throw new RuntimeException(
+                    "Precio unitario inválido para el producto: " + detalle.getProducto().getNombre());
         }
 
         if (detalle.getPesoTotal() == null || detalle.getPesoTotal() <= 0) {
             throw new RuntimeException("Peso total inválido para el producto: " + detalle.getProducto().getNombre());
+        }
+
+        if (detalle.getProducto() != null && detalle.getProducto().getClasificacion() != null) {
+            Double pesoUnidad = detalle.getProducto().getClasificacion().getPeso(); // Por ejemplo, 20kg por unidad
+            if (pesoUnidad != null && pesoUnidad > 0) {
+                double pesoEsperado = detalle.getCantidad() * pesoUnidad;
+                if (Math.abs(detalle.getPesoTotal() - pesoEsperado) > 0.1) { // tolerancia de 0.1 kg
+                    throw new RuntimeException(
+                            "El peso total no concuerda con la cantidad según la presentación. Esperado: "
+                                    + pesoEsperado + " kg para " + detalle.getCantidad() + " unidades.");
+                }
+            }
         }
     }
 }

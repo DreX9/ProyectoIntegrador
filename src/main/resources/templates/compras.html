@@ -54,7 +54,7 @@
                                 <select id="producto" class="form-select">
                                     <option value="" disabled selected>Seleccionar</option>
                                     <option th:each="prod : ${productos}" th:value="${prod.id}" th:text="${prod.nombre}"
-                                        th:attr="data-clasificacion=${prod.clasificacion.nombre},data-presentacion=${prod.clasificacion.presentacion}">
+                                        th:attr="data-clasificacion=${prod.clasificacion.nombre},data-presentacion=${prod.clasificacion.presentacion},data-peso=${prod.clasificacion.peso}">
                                     </option>
 
                                 </select>
@@ -144,6 +144,20 @@
                 alert('Completa todos los campos.');
                 return;
             }
+            // ✅ VALIDACIÓN DE PRESENTACIÓN VS. PESO TOTAL
+            const selectedOption = prodSel.options[prodSel.selectedIndex];
+            const pesoUnidad = parseFloat(selectedOption.getAttribute("data-peso")); // debe ser el peso exacto (ej. 20.0)
+
+            if (!isNaN(pesoUnidad)) {
+                const cantidadNum = parseFloat(cantidad);
+                const pesoNum = parseFloat(peso);
+                const pesoEsperado = cantidadNum * pesoUnidad;
+
+                if (Math.abs(pesoNum - pesoEsperado) > 0.1) {
+                    alert(`Error: El peso total (${pesoNum} kg) no concuerda con la cantidad (${cantidadNum} und.) para la presentación de ${pesoUnidad}kg. Se esperaba aproximadamente ${pesoEsperado}kg.`);
+                    return;
+                }
+            }
 
             // Agregar fila a la tabla
             const fila = document.querySelector('#tablaDetalles tbody').insertRow();
@@ -199,12 +213,15 @@
             const selectedOption = this.options[this.selectedIndex];
             const clasificacion = selectedOption.getAttribute("data-clasificacion");
             const presentacion = selectedOption.getAttribute("data-presentacion");
+            const pesoUnidad = selectedOption.getAttribute("data-peso");
+
+            const texto = `${clasificacion || ''} - ${presentacion || ''} - ${pesoUnidad || ''} kg`;
+
+            document.getElementById("infoProducto").innerText = texto;
 
             console.log("Clasificación:", clasificacion);
             console.log("Presentación:", presentacion);
-
-            // Aquí podrías mostrarlo en un <label> u otro lugar de la vista
-            document.getElementById("infoProducto").innerText = clasificacion + " - " + presentacion;
+            console.log("Peso por unidad:", pesoUnidad);
         });
 
 

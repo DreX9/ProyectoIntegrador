@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.integrador.DTO.InventarioResumenDTO;
 import com.example.integrador.entities.Inventario;
 import com.example.integrador.repositories.InventarioRepository;
 
@@ -17,5 +18,9 @@ public class InventarioService {
     public List<Inventario> listarInventarioDisponible() {
         // Puedes filtrar si quieres, o devolver todo
         return inventarioRepository.findAll(); // o aplicar filtro
+    }
+
+    public List<InventarioResumenDTO> listarInventarioDisponibleAgrupado() {
+        return inventarioRepository.obtenerResumenInventario();
     }
 }

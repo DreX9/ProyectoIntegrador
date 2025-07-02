@@ -16,4 +16,5 @@ public class InventarioDetalleService {
     public List<InventarioDetalle> inventarioDetalleSel() {
         return repository.findAll(); 
     }
+    
 }

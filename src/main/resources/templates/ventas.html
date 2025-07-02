@@ -44,7 +44,7 @@
                             <label class="form-label">Teléfono</label>
                             <input type="text" class="form-control" th:value="${cliente.telefono}" readonly />
                         </div>
-                       
+
 
                     </div>
                     <form th:action="@{/ventas/save}" th:object="${venta}" method="post">
@@ -66,11 +66,12 @@
                         <div class="row g-2 align-items-end mb-3">
                             <div class="col-md-3">
                                 <label class="form-label">Inventario</label>
-                                <select id="inventario" class="form-select">
-                                    <option value="" disabled selected>Seleccionar</option>
-                                    <option th:each="inv : ${inventarios}" th:value="${inv.id}"
-                                        th:text="${inv.detalleCompra.producto.nombre + ' - ' + inv.almacen.nombre + ' - ' + inv.pesoDisponible + ' kg'}">
+                                <select id="inventario" class="form-select" required>
+                                    <option value="" disabled selected>-- Seleccionar inventario --</option>
+                                    <option th:each="inv : ${inventarios}" th:value="${inv.idInventario}"
+                                        th:text="${inv.nombreProducto + ' - ' + inv.pesoTotalDisponible + ' kg'}">
                                     </option>
+
                                 </select>
                             </div>
 

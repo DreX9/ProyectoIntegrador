@@ -27,7 +27,7 @@ public class Inventario {
 
     @ManyToOne
     @JoinColumn(name = "id_almacen")
-    private Almacen Almacen;
+    private Almacen almacen;
 
     @Column(name = "cantidad_disponible")
     private Integer cantidadDisponible;
