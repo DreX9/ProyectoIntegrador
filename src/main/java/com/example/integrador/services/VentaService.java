@@ -70,8 +70,7 @@ public class VentaService {
                     // ⚠️ Cuidado: solo se descuentan unidades completas
                     int cantidadActual = inv.getCantidadDisponible() != null ? inv.getCantidadDisponible() : 0;
 
-                    // 🧮 Total de unidades en ese inventario
-                    int unidadesTotales = (int) Math.floor(disponible / pesoUnidad);
+                    
 
                     // 🔽 ¿Cuánto se está usando ahora?
                     int unidadesUsadas = (int) Math.floor(usado / pesoUnidad);

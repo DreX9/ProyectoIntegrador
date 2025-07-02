@@ -7,8 +7,6 @@ import com.example.integrador.entities.Compra;
 import com.example.integrador.entities.DetalleCompra;
 import com.example.integrador.repositories.CompraRepository;
 import com.example.integrador.repositories.DetalleCompraRepository;
-import com.example.integrador.repositories.ProductoRepository;
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +16,6 @@ public class CompraService {
 
     private final CompraRepository compraRepository;
     private final DetalleCompraRepository detalleCompraRepository;
-    private final ProductoRepository productoRepository;
 
     public List<Compra> listarCompras() {
         return compraRepository.findAll();
