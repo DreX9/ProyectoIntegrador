@@ -5,14 +5,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.integrador.entities.KardexDTO;
 import com.example.integrador.repositories.KardexRepository;
+
 @Service
 public class KardexService {
 
@@ -65,7 +59,7 @@ public class KardexService {
             saldosStyle.setFillForegroundColor(IndexedColors.LIGHT_YELLOW.getIndex());
             saldosStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
-            // Fila 0 (títulos agrupados)
+            // Fila 0: títulos agrupados
             Row groupRow = sheet.createRow(0);
             groupRow.createCell(0).setCellValue("Fecha");
             groupRow.createCell(1).setCellValue("Producto");
@@ -81,77 +75,63 @@ public class KardexService {
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 5, 7));
             sheet.addMergedRegion(new CellRangeAddress(0, 0, 8, 10));
 
-            // Fila 1 (subtítulos)
+            // Fila 1: subtítulos
             Row header = sheet.createRow(1);
-            header.createCell(0).setCellValue("Fecha");
-            header.createCell(1).setCellValue("Producto");
+            String[] headers = {
+                "Fecha", "Producto", "Peso (kg)", "C. Unit", "C. Total",
+                "Peso (kg)", "C. Unit", "C. Total",
+                "Peso (kg)", "C. Unit", "C. Total"
+            };
 
-            header.createCell(2).setCellValue("Peso (kg)");
-            header.createCell(3).setCellValue("C. Unit");
-            header.createCell(4).setCellValue("C. Total");
-
-            header.createCell(5).setCellValue("Peso (kg)");
-            header.createCell(6).setCellValue("C. Unit");
-            header.createCell(7).setCellValue("C. Total");
-
-            header.createCell(8).setCellValue("Peso (kg)");
-            header.createCell(9).setCellValue("C. Unit");
-            header.createCell(10).setCellValue("C. Total");
-
-            for (int i = 0; i <= 10; i++) {
-                header.getCell(i).setCellStyle(headerStyle);
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(headers[i]);
+                cell.setCellStyle(headerStyle);
             }
 
             int rowNum = 2;
 
             for (KardexDTO mov : movimientos) {
-                Row row = sheet.createRow(rowNum++);
-                row.createCell(0).setCellValue(mov.getFecha().toString());
-                row.createCell(1).setCellValue(mov.getNombreProducto());
-
                 if (mov.getTipo().equalsIgnoreCase("Entrada")) {
-                    double peso = mov.getPeso();
-                    double precio = mov.getPrecioUnitario();
-                    double total = mov.getCostoTotal();
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(mov.getFecha().toString());
+                    row.createCell(1).setCellValue(mov.getNombreProducto());
+                    row.createCell(2).setCellValue(mov.getPeso());
+                    row.createCell(3).setCellValue(mov.getPrecioUnitario());
+                    row.createCell(4).setCellValue(mov.getCostoTotal());
 
-                    // Entrada
-                    row.createCell(2).setCellValue(peso);
-                    row.createCell(3).setCellValue(precio);
-                    row.createCell(4).setCellValue(total);
+                    saldos.add(new Lote(mov.getPeso(), mov.getPrecioUnitario()));
 
-                    saldos.add(new Lote(peso, precio));
-
-                } else {
+                } else { // Salida
                     double pesoSalida = mov.getPeso();
-                    double costoTotalSalida = 0;
-                    double pesoOriginal = pesoSalida;
-                    // FIFO (PEPS)
+
                     while (pesoSalida > 0 && !saldos.isEmpty()) {
                         Lote lote = saldos.get(0);
-                        if (pesoSalida >= lote.peso) {
-                            costoTotalSalida += lote.peso * lote.precioUnitario;
-                            pesoSalida -= lote.peso;
+                        double usado = Math.min(lote.peso, pesoSalida);
+
+                        Row row = sheet.createRow(rowNum++);
+                        row.createCell(0).setCellValue(mov.getFecha().toString());
+                        row.createCell(1).setCellValue(mov.getNombreProducto());
+                        row.createCell(5).setCellValue(usado);
+                        row.createCell(6).setCellValue(lote.precioUnitario);
+                        row.createCell(7).setCellValue(usado * lote.precioUnitario);
+
+                        lote.peso -= usado;
+                        pesoSalida -= usado;
+
+                        if (lote.peso <= 0) {
                             saldos.remove(0);
-                        } else {
-                            costoTotalSalida += pesoSalida * lote.precioUnitario;
-                            lote.peso -= pesoSalida;
-                            pesoSalida = 0;
                         }
                     }
-                    double costoUnitarioSalida = pesoOriginal != 0 ? costoTotalSalida / pesoOriginal : 0;
-                    row.createCell(5).setCellValue(mov.getPeso());
-                    row.createCell(6).setCellValue(costoUnitarioSalida);
-                    row.createCell(7).setCellValue(costoTotalSalida);
                 }
 
-                // Calcular saldos
-                double saldoPeso = saldos.stream().mapToDouble(l -> l.peso).sum();
-                double saldoValor = saldos.stream().mapToDouble(l -> l.peso * l.precioUnitario).sum();
-                double saldoUnitario = saldoPeso != 0 ? saldoValor / saldoPeso : 0;
-
-                row.createCell(8).setCellValue(saldoPeso);
-                row.createCell(9).setCellValue(saldoUnitario);
-                row.createCell(10).setCellValue(saldoValor);
+                // Mostrar todos los saldos actuales
+                for (Lote s : saldos) {
+                    Row saldoRow = sheet.createRow(rowNum++);
+                    saldoRow.createCell(8).setCellValue(s.peso);
+                    saldoRow.createCell(9).setCellValue(s.precioUnitario);
+                    saldoRow.createCell(10).setCellValue(s.peso * s.precioUnitario);
+                }
             }
 
             for (int i = 0; i <= 10; i++) {
