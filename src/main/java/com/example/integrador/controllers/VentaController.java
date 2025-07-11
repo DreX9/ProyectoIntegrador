@@ -2,6 +2,7 @@ package com.example.integrador.controllers;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,11 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.core.Authentication;
 
+import com.example.integrador.DTO.VentaResumenDTO;
 import com.example.integrador.entities.Cliente;
 import com.example.integrador.entities.Usuario;
 import com.example.integrador.entities.Venta;
@@ -22,7 +25,9 @@ import com.example.integrador.services.ClienteService;
 import com.example.integrador.services.InventarioService;
 import com.example.integrador.services.UsuarioService;
 import com.example.integrador.services.VentaService;
+import com.example.integrador.util.FacturaPdfGenerator;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -109,6 +114,26 @@ public class VentaController {
         model.addAttribute("almacenes", almacenService.almacenSel());
 
         return "ventas";
+    }
+
+    // tabla vendidos
+    @GetMapping("/historial")
+    public String verHistorialVentas(Model model) {
+        List<VentaResumenDTO> resumenes = ventaService.obtenerResumenVentas();
+        model.addAttribute("resumenes", resumenes);
+        return "historial"; // ← debe coincidir exactamente con el nombre de tu archivo HTML
+    }
+
+    // pdf
+    @GetMapping("/factura/{id}")
+    public void verFacturaPdf(@PathVariable Integer id, HttpServletResponse response) throws Exception {
+        Venta venta = ventaService.buscarPorId(id)
+                .orElseThrow(() -> new RuntimeException("Venta no encontrada"));
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=factura_" + id + ".pdf");
+
+        FacturaPdfGenerator.generarFacturaPDF(response.getOutputStream(), venta);
     }
 
 }
