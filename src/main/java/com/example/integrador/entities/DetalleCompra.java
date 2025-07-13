@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -32,6 +34,7 @@ public class DetalleCompra {
     private Integer cantidad;
     @Column(name = "precio_unitario")
     private Double precioUnitario;
+    
     @Column(name = "peso_total_kg")
     private Double pesoTotal;
     @Column(name = "subtotal")

@@ -70,6 +70,7 @@
                             <div class="col-md-2">
                                 <label class="form-label">Cantidad</label>
                                 <input type="number" id="cantidad" class="form-control" />
+
                             </div>
                             <div class="col-md-2">
                                 <label class="form-label">Peso (Kg)</label>
@@ -126,66 +127,7 @@
         let contador = 0;
         const compraFecha = document.getElementById('fechaCompra');
 
-        document.getElementById('btnAgregar').addEventListener('click', () => {
-            const prodSel = document.getElementById('producto');
-            const productoId = prodSel.value;
-            const productoNombre = prodSel.options[prodSel.selectedIndex]?.text;
-
-            const almaSel = document.getElementById('almacen');
-            const almacenId = almaSel.value;
-            const almacenNombre = almaSel.options[almaSel.selectedIndex]?.text;
-
-            const precio = document.getElementById('precioUnitario').value;
-            const cantidad = document.getElementById('cantidad').value;
-            const peso = document.getElementById('pesoTotal').value;
-            const fecha = compraFecha.value;
-
-            if (!productoId || !almacenId || !precio || !cantidad || !peso || !fecha) {
-                alert('Completa todos los campos.');
-                return;
-            }
-            // ✅ VALIDACIÓN DE PRESENTACIÓN VS. PESO TOTAL
-            const selectedOption = prodSel.options[prodSel.selectedIndex];
-            const pesoUnidad = parseFloat(selectedOption.getAttribute("data-peso")); // debe ser el peso exacto (ej. 20.0)
-
-            if (!isNaN(pesoUnidad)) {
-                const cantidadNum = parseFloat(cantidad);
-                const pesoNum = parseFloat(peso);
-                const pesoEsperado = cantidadNum * pesoUnidad;
-
-                if (Math.abs(pesoNum - pesoEsperado) > 0.1) {
-                    alert(`Error: El peso total (${pesoNum} kg) no concuerda con la cantidad (${cantidadNum} und.) para la presentación de ${pesoUnidad}kg. Se esperaba aproximadamente ${pesoEsperado}kg.`);
-                    return;
-                }
-            }
-
-            // Agregar fila a la tabla
-            const fila = document.querySelector('#tablaDetalles tbody').insertRow();
-            fila.innerHTML = `
-        <td>${productoNombre}</td>
-        <td>${precio}</td>
-        <td>${cantidad}</td>
-        <td>${peso}</td>
-        <td>${fecha}</td>
-        <td>${almacenNombre}</td>
-        <td><button type="button" class="btn btn-danger btn-sm" onclick="removeDetailRow(this, ${contador})">Eliminar</button></td>
-    `;
-
-            // Campos ocultos
-            const div = document.createElement('div');
-            div.id = `detalle-${contador}`;
-            div.innerHTML = `
-        <input type="hidden" name="detalles[${contador}].producto.id" value="${productoId}" />
-        <input type="hidden" name="detalles[${contador}].precioUnitario" value="${precio}" />
-        <input type="hidden" name="detalles[${contador}].cantidad" value="${cantidad}" />
-        <input type="hidden" name="detalles[${contador}].pesoTotal" value="${peso}" />
-        <input type="hidden" name="detalles[${contador}].fechaCompra" value="${fecha}" />
-        <input type="hidden" name="detalles[${contador}].almacen.id" value="${almacenId}" />
-    `;
-            document.getElementById('detallesHiddenInputs').appendChild(div);
-
-            contador++;
-        });
+        
         function removeDetailRow(button, index) {
             // Elimina la fila de la tabla
             const row = button.closest('tr');
@@ -224,6 +166,78 @@
             console.log("Peso por unidad:", pesoUnidad);
         });
 
+        document.getElementById('btnAgregar').addEventListener('click', () => {
+            const prodSel = document.getElementById('producto');
+            const productoId = prodSel.value;
+            const productoNombre = prodSel.options[prodSel.selectedIndex]?.text;
+
+            const almaSel = document.getElementById('almacen');
+            const almacenId = almaSel.value;
+            const almacenNombre = almaSel.options[almaSel.selectedIndex]?.text;
+
+            const precio = parseFloat(document.getElementById('precioUnitario').value);
+            const cantidad = parseInt(document.getElementById('cantidad').value);
+            const peso = parseFloat(document.getElementById('pesoTotal').value);
+            const fecha = compraFecha.value;
+
+            // Validar que todos los campos estén completos
+            if (!productoId || !almacenId || isNaN(precio) || isNaN(cantidad) || isNaN(peso) || !fecha) {
+                alert('Completa todos los campos correctamente.');
+                return;
+            }
+
+            // Validación manual estilo @Min y @Max
+            if (precio <= 0 || precio > 10000) {
+                alert('El precio debe estar entre 1 y 10000.');
+                return;
+            }
+
+            if (cantidad < 1 || cantidad > 100) {
+                alert('La cantidad debe estar entre 1 y 100.');
+                return;
+            }
+
+            if (peso <= 0 || peso > 100) {
+                alert('El peso debe estar entre 1kg y 100kg.');
+                return;
+            }
+
+            // Validación de peso vs presentación
+            const pesoUnidad = parseFloat(prodSel.options[prodSel.selectedIndex].getAttribute("data-peso"));
+            if (!isNaN(pesoUnidad)) {
+                const pesoEsperado = cantidad * pesoUnidad;
+                if (Math.abs(peso - pesoEsperado) > 0.1) {
+                    alert(`Error: El peso total (${peso} kg) no concuerda con la cantidad (${cantidad}) para la presentación de ${pesoUnidad}kg. Se esperaba aprox. ${pesoEsperado}kg.`);
+                    return;
+                }
+            }
+
+            // Agregar a tabla y ocultos (sin cambios aquí)
+            const fila = document.querySelector('#tablaDetalles tbody').insertRow();
+            fila.innerHTML = `
+        <td>${productoNombre}</td>
+        <td>${precio}</td>
+        <td>${cantidad}</td>
+        <td>${peso}</td>
+        <td>${fecha}</td>
+        <td>${almacenNombre}</td>
+        <td><button type="button" class="btn btn-danger btn-sm" onclick="removeDetailRow(this, ${contador})">Eliminar</button></td>
+    `;
+
+            const div = document.createElement('div');
+            div.id = `detalle-${contador}`;
+            div.innerHTML = `
+        <input type="hidden" name="detalles[${contador}].producto.id" value="${productoId}" />
+        <input type="hidden" name="detalles[${contador}].precioUnitario" value="${precio}" />
+        <input type="hidden" name="detalles[${contador}].cantidad" value="${cantidad}" />
+        <input type="hidden" name="detalles[${contador}].pesoTotal" value="${peso}" />
+        <input type="hidden" name="detalles[${contador}].fechaCompra" value="${fecha}" />
+        <input type="hidden" name="detalles[${contador}].almacen.id" value="${almacenId}" />
+    `;
+            document.getElementById('detallesHiddenInputs').appendChild(div);
+
+            contador++;
+        });
 
     </script>
     <!-- Modal Historial -->

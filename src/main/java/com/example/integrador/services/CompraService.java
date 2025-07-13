@@ -81,4 +81,8 @@ public class CompraService {
             }
         }
     }
+
+    public int contarCompras() {
+        return compraRepository.contarCompras();
+    }
 }

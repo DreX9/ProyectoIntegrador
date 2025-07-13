@@ -222,4 +222,21 @@ public class VentaService {
         return dto;
     }
 
+    // Cantidad total de ventas
+    public int contarVentas() {
+        return ventaRepository.contarVentas();
+    }
+
+    // Suma total de ingresos por ventas
+    public double obtenerGananciaTotal() {
+        Double total = ventaRepository.obtenerGananciaTotal();
+        return total != null ? total : 0.0;
+    }
+
+    // Nombre del producto más vendido (por peso total vendido)
+    public String obtenerProductoMasVendido() {
+        List<String> lista = ventaRepository.obtenerProductosOrdenadosPorVenta();
+        return lista.isEmpty() ? "Sin datos" : lista.get(0);
+    }
+
 }

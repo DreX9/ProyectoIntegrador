@@ -105,21 +105,45 @@
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody id="detalleBody">
+                                    <!-- Reconstrucción en caso de error -->
+                                    <tr th:each="d, iterStat : *{detalles}">
+                                        <td th:text="${d.inventario.detalleCompra.producto.nombre}">Producto</td>
+                                        <td th:text="${d.inventario.detalleCompra.almacen.nombre}">Almacén</td>
+                                        <td th:text="${d.peso}">Peso</td>
+                                        <td th:text="${d.precio}">Precio</td>
+                                        <td th:text="${d.subTotal}">Subtotal</td>
+                                        <td><button type="button" class="btn btn-danger btn-sm"
+                                                onclick="this.closest('tr').remove();">Eliminar</button></td>
+                                    </tr>
+                                </tbody>
+
                             </table>
                         </div>
 
-                        <div id="detallesHiddenInputs"></div>
+                        <div id="detallesHiddenInputs">
+                            <div th:each="d, iter : *{detalles}">
+                                <input type="hidden" th:name="'detalles[' + ${iter.index} + '].inventario.id'"
+                                    th:value="${d.inventario.id}" />
+                                <input type="hidden" th:name="'detalles[' + ${iter.index} + '].peso'"
+                                    th:value="${d.peso}" />
+                                <input type="hidden" th:name="'detalles[' + ${iter.index} + '].precio'"
+                                    th:value="${d.precio}" />
+                            </div>
+                        </div>
+
 
                         <!-- Subtotal y Total -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label class="form-label">Subtotal</label>
-                                <input type="text" id="subtotalVenta" class="form-control" readonly />
+                                <input type="text" id="subtotalVenta" class="form-control" readonly
+                                    th:value="${subtotalCalculado != null ? subtotalCalculado : 0}" />
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Total</label>
-                                <input type="text" id="totalVenta" class="form-control" readonly />
+                                <input type="text" id="totalVenta" class="form-control" readonly
+                                    th:value="${totalCalculado != null ? totalCalculado : 0}" />
                             </div>
                         </div>
 
@@ -132,10 +156,13 @@
             </main>
         </div>
     </div>
-
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        subtotal = /*[[${subtotalCalculado != null ? subtotalCalculado : 0}]]*/ 0;
+        contador = /*[[${#lists.size(venta.detalles)}]]*/ 0;
+        /*]]>*/
+    </script>
     <script>
-        let contador = 0;
-        let subtotal = 0;
         const descuentoSelect = document.querySelector("select[name='descuento']");
 
         document.getElementById('btnAgregar').addEventListener('click', () => {

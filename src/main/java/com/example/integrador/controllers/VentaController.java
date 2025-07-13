@@ -84,6 +84,13 @@ public class VentaController {
             return "redirect:/ventas";
 
         } catch (RuntimeException ex) {
+            double subtotal = venta.getDetalles().stream()
+                    .mapToDouble(d -> d.getSubTotal() != null ? d.getSubTotal() : d.getPeso() * d.getPrecio())
+                    .sum();
+            double total = subtotal * (1 - (venta.getDescuento() != null ? venta.getDescuento() : 0));
+
+            model.addAttribute("subtotalCalculado", subtotal);
+            model.addAttribute("totalCalculado", total);
             model.addAttribute("error", ex.getMessage());
             model.addAttribute("venta", venta);
             model.addAttribute("inventarios", inventarioService.listarInventarioDisponible());
