@@ -28,4 +28,7 @@ public class ProductoService {
      public void productoDelete(Integer id) {
         repository.deleteById(id);
     }
+    public int contarProductos() {
+        return repository.contarProductos();
+    }
 }

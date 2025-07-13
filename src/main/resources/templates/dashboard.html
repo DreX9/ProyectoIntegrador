@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Panel de Control</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <header th:replace="~{/fragments/template :: header('Dashboard')}"></header>
+
+            <main class="col py-3">
+                <h3 class="mb-4">Resumen General</h3>
+                <div class="row g-3">
+
+                    <!-- Total de Ventas -->
+                    <div class="col-md-4">
+                        <div class="card text-white bg-success shadow">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-currency-dollar"></i> Ventas</h5>
+                                <p class="card-text display-6" th:text="${totalVentas}">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ganancia Total -->
+                    <div class="col-md-4">
+                        <div class="card text-white bg-primary shadow">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-cash-coin"></i> Ganancia Total</h5>
+                                <p class="card-text display-6" th:text="'S/ ' + ${gananciaTotal}">0.00</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Producto más vendido -->
+                    <div class="col-md-4">
+                        <div class="card text-white bg-warning shadow">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-box-seam"></i> Más Vendido</h5>
+                                <p class="card-text display-6" th:text="${productoMasVendido}">---</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total de Clientes -->
+                    <div class="col-md-4">
+                        <div class="card text-white bg-info shadow">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-people-fill"></i> Clientes</h5>
+                                <p class="card-text display-6" th:text="${totalClientes}">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total de Productos -->
+                    <div class="col-md-4">
+                        <div class="card text-white bg-secondary shadow">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-archive"></i> Productos</h5>
+                                <p class="card-text display-6" th:text="${totalProductos}">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Total de Compras -->
+                    <div class="col-md-4">
+                        <div class="card text-white bg-dark shadow">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="bi bi-truck"></i> Compras</h5>
+                                <p class="card-text display-6" th:text="${totalCompras}">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
