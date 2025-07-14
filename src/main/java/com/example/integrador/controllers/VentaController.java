@@ -47,7 +47,7 @@ public class VentaController {
         model.addAttribute("clientes", clienteService.clienteSel()); // puede quedar vacío de momento
         model.addAttribute("almacenes", almacenService.almacenSel());
         return "ventas"; // Tu archivo Thymeleaf: ventas.html
-    }
+    } 
 
     @PostMapping("/save")
     public String guardarVenta(@ModelAttribute Venta venta, Model model) {
