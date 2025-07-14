@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import com.example.integrador.services.ProductoService;
 import com.example.integrador.services.ProveedorService;
 import com.example.integrador.services.UsuarioService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -49,7 +51,9 @@ public class CompraController {
     }
 
     @PostMapping("/save")
-    public String guardarCompra(@ModelAttribute Compra compra) {
+    public String guardarCompra(@Valid @ModelAttribute Compra compra,
+                            BindingResult result,
+                            Model model) {
         // 1. Obtener el username del usuario logueado
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     String username = auth.getName(); // ← este es el email/username del usuario

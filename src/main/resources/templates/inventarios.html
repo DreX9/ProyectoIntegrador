@@ -108,37 +108,39 @@
         document.addEventListener("DOMContentLoaded", function () {
             const filas = document.querySelectorAll("#tablaStock tbody tr");
             const hoy = new Date();
-            hoy.setHours(0, 0, 0, 0); // Comparar solo fechas
+            hoy.setHours(0, 0, 0, 0);
 
             filas.forEach((fila) => {
-                const celdaPeso = fila.children[3];
-                const celdaFecha = fila.children[4];
+                const celdas = fila.querySelectorAll("td");
+                if (celdas.length < 5) return;
+
+                const celdaPeso = celdas[3];
+                const celdaFecha = celdas[4];
 
                 const pesoTexto = celdaPeso.textContent.trim();
-                const peso = parseFloat(pesoTexto);
+                const fechaTexto = celdaFecha.textContent.trim();
 
-                const fechaTexto = celdaFecha.textContent.trim(); // Formato: dd/MM/yyyy
+                const peso = parseFloat(pesoTexto);
                 const [dia, mes, anio] = fechaTexto.split("/").map(num => parseInt(num));
                 const fechaCaducidad = new Date(anio, mes - 1, dia);
                 fechaCaducidad.setHours(0, 0, 0, 0);
 
-                // Estado de alerta para mostrar mensaje solo una vez
                 let mostrarAlerta = false;
 
-                // 🔴 Peso crítico
+                // Validación de peso
                 if (!isNaN(peso)) {
                     if (peso < 10) {
                         marcarFila(fila, celdaPeso, "¡Producto con menos de 10 kg!", "bi-exclamation-triangle-fill", "#dc3545");
                         mostrarAlerta = true;
-                    } else if (peso >= 10 && peso < 20) {
+                    } else if (peso < 20) {
                         agregarIcono(celdaPeso, "Quedan menos de 20 kg", "bi-exclamation-triangle-fill", "#ffc107");
                     }
                 }
 
-                // 🔴 Fecha crítica (caduca hoy)
+                // Validación de fecha
                 const diferenciaDias = (fechaCaducidad - hoy) / (1000 * 60 * 60 * 24);
-                if (diferenciaDias === 0) {
-                    marcarFila(fila, celdaFecha, "¡Producto caduca hoy!", "bi-calendar-x-fill", "#dc3545");
+                if (diferenciaDias <= 0) {
+                    marcarFila(fila, celdaFecha, "¡Producto caduca hoy o ya caducó!", "bi-calendar-x-fill", "#dc3545");
                     mostrarAlerta = true;
                 } else if (diferenciaDias === 1) {
                     agregarIcono(celdaFecha, "Caduca mañana", "bi-calendar-event", "#ffc107");
@@ -150,26 +152,21 @@
                 }
             });
 
-            // 🔧 Marca la fila en rojo y agrega ícono en la celda correspondiente
             function marcarFila(fila, celda, mensaje, iconoClase, color) {
                 fila.style.backgroundColor = "#f8d7da";
                 fila.style.color = "#721c24";
-
                 const icono = document.createElement("i");
                 icono.className = `bi ${iconoClase} me-2`;
                 icono.style.color = color;
                 icono.title = mensaje;
-
                 celda.prepend(icono);
             }
 
-            // 🔧 Solo agrega un ícono sin marcar fila
             function agregarIcono(celda, mensaje, iconoClase, color) {
                 const icono = document.createElement("i");
                 icono.className = `bi ${iconoClase} me-2`;
                 icono.style.color = color;
                 icono.title = mensaje;
-
                 celda.prepend(icono);
             }
         });
